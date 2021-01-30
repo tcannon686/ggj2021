@@ -1,62 +1,33 @@
 -- imports
+g3d = require "g3d"
 local Game = require "game"
+local Player = require "player"
 
-local intro = [[
-Commands:
+io.stdout:setvbuf("no")
 
-ask [name] [weapon|location|name]   Ask the person with the given name what they
-                                    saw.
-accuse [weapon] [location] [name]   Accuse the given person of commiting the
-                                    murder.
+function love.load()
+    love.graphics.setBackgroundColor(0.25,0.5,1)
+    love.graphics.setDefaultFilter("nearest")
 
-Examples:
-ask red weapon
-
-]]
-
--- Returns the index of the value in the given table or nil.
-function indexOf(table, value)
-    for i, v in ipairs(table) do
-        if v == value then
-            return i
-        end
-    end
-    return nil
-end
-
-function cmdlineGame()
-    print(intro)
-
+    local map = g3d.newModel("assets/map.obj", "assets/tileset.png", {-2, 2.5, -3.5}, nil, {-1,-1,1})
+    local background = g3d.newModel("assets/sphere.obj", "assets/starfield.png", {0,0,0}, nil, {500,500,500})
     local game = Game:new(7)
+    local player = Player:new(0,0,0, map)
 
-    for line in io.lines() do
-        local verb, args = string.match(line, "(%w+) (.*)")
+    function love.mousemoved(x,y, dx,dy)
+        g3d.camera.firstPersonLook(dx,dy)
+    end
 
-        -- if no args were given
-        if not verb then
-            verb = string.match(line, "(%w+)")
-        end
-        
-        if verb == "exit" then
-            break
-        end
+    function love.update(dt)
+        player:update(dt)
+    end
 
-        if verb == "ask" then
-            print(game:ask(string.match(args, "(%w+) (%w+)")))
-        end
+    function love.keypressed(k)
+        if k == "escape" then love.event.push("quit") end
+    end
 
-        if verb == "accuse" then
-            if game:accuse(string.match(args, "(%w+) (%w+) (%w+)")) then
-                break
-            end
-        end
-
-        if verb == "truth" then
-            for i,v in pairs(game.truth) do
-                print(i,v)
-            end
-        end
+    function love.draw()
+        map:draw()
+        background:draw()
     end
 end
-
-cmdlineGame()

@@ -24,7 +24,7 @@ local wordRepresentations = {
         "backyard",
         "garage",
         "theater",
-        "living room"
+        "living_room"
     },
 
     weapons = {
