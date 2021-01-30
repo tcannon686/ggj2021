@@ -14,11 +14,11 @@ function Textbox:new(text, personTalkingTo)
     local self = setmetatable({}, Textbox)
 
     -- preprocess the text to be nicely word wrapped
+    self.text = {}
     for i, boxtext in ipairs(text) do
-        text[i] = lume.wordwrap(boxtext, 64)
+        self.text[i] = lume.wordwrap(boxtext, 64)
     end
 
-    self.text = text
     self.textIndex = 1
     self.textScroll = 0
     self.nextSprite = lg.newImage("assets/textnext.png")
