@@ -4,20 +4,6 @@ local Person = require "person"
 local Player = require "player"
 local lume = require "lume"
 
---[[
-Creates the game state.
-
-Fields:
- - people          A list of people created using makePerson.
- - accuse (props)  Accuse a person of the murder. Returns true if the
-                   accusation is true, false otherwise. props should be a table
-                   including the person, the weapon, and the location.
- - ask (props)     Ask a person a question. Props should contain two fields:
-                   person, and what. Returns two values. The first value is the
-                   person's response or nil if they won't answer the question,
-                   the second is their dialogue.
-]]
-
 local wordRepresentations = {
     locations = {
         "patio",
@@ -98,9 +84,7 @@ end
 
 function Game:update(dt)
     -- only update the player if there is no active textbox
-    if not self.textbox then
-        self.player:update(dt)
-    end
+    self.player:update(dt, self)
 
     for _, person in pairs(self.people) do
         person:update(dt, self)
@@ -110,7 +94,9 @@ function Game:update(dt)
 end
 
 function Game:mousemoved(x,y, dx,dy)
-    g3d.camera.firstPersonLook(dx,dy)
+    if not self.textbox then
+        g3d.camera.firstPersonLook(dx,dy)
+    end
 end
 
 function Game:draw()
@@ -141,7 +127,7 @@ function Game:ask(person, what)
 end
 
 function Game:keypressed(k)
-    if self.textbox then
+    if self.textbox and self.textbox.keypressed then
         self.textbox:keypressed(k)
     end
 end
@@ -150,7 +136,7 @@ function Game:mousepressed(k)
     for _, person in pairs(self.people) do
         person:mousepressed(k)
     end
-    if self.textbox then
+    if self.textbox and self.textbox.mousepressed then
         self.textbox:mousepressed(k)
     end
 end

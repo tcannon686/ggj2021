@@ -2,19 +2,6 @@ local g3d = require "g3d"
 local Textbox = require "textbox"
 local StateStack = require "statestack"
 
---[[
-Creates a person.
-
-Fields:
- - ask (what)        A function to ask about the murder. The 'what' field is what
-                     field of 'known' to ask about, i.e. 'person', 'location', or
-                     'weapon'. Returns two values. The first value is the answer or
-                     nil if they are unwilling to answer the question. The second
-                     value is a string representing their dialog.
- - onMakeAccusation  Called when the user makes an accusation
- - onAccused         Called when the user accuses this person
-]]
-
 -- define the person class
 local Person = {}
 Person.__index = Person
@@ -26,7 +13,7 @@ function Person:new(name, known)
     self.known = known
 
     self.model = g3d.newModel("assets/vertical_plane.obj", "assets/person1.png", {0,1.6,2}, {0,0,0}, {0.4,0.4,0.4})
-    self.text = {"hello there", "Ill fuck your mom", "joey didnt get added to the repo"}
+    self.text = {"hello there", "I'll fuck your mom", "joey didnt get added to the repo"}
     self.speaking = false
     self.inSpeakingRange = false
 
@@ -49,7 +36,7 @@ function Person:update(dt, game)
         -- player has now initiated a conversation with this person
         self.inSpeakingRange = true
         if self.speaking and not game.textbox then
-            game.textbox = Textbox:new(self.text)
+            game.textbox = Textbox:new(self.text, self)
         end
     else
         self.inSpeakingRange = false
@@ -65,7 +52,6 @@ end
 
 function Person:mousepressed(k)
     if self.inSpeakingRange and k == 1 then
-        print("zch is gay")
         self.speaking = true
     end
 end

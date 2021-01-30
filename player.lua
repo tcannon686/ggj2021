@@ -40,11 +40,11 @@ end
 
 local accumulator = 0
 local timestep = 1/60
-function Player:update(dt)
+function Player:update(dt, game)
     accumulator = accumulator + dt
     while accumulator > timestep do
         accumulator = accumulator - timestep
-        self:fixedUpdate(timestep)
+        self:fixedUpdate(timestep, game)
     end
     g3d.camera.lookInDirection()
 end
@@ -100,7 +100,7 @@ function Player:moveAndSlide(mx,my,mz)
     return mx, my, mz, nx, ny, nz
 end
 
-function Player:fixedUpdate(dt)
+function Player:fixedUpdate(dt, game)
     -- collect inputs
     local moveX,moveY = 0,0
     local speed = 0.015
@@ -115,12 +115,14 @@ function Player:fixedUpdate(dt)
     -- gravity
     self.speed[2] = self.speed[2] + gravity
 
-    if love.keyboard.isDown("w") then moveY = moveY - 1 end
-    if love.keyboard.isDown("a") then moveX = moveX - 1 end
-    if love.keyboard.isDown("s") then moveY = moveY + 1 end
-    if love.keyboard.isDown("d") then moveX = moveX + 1 end
-    if love.keyboard.isDown("space") and self.onGround then
-        self.speed[2] = self.speed[2] - jump
+    if not game.textbox then
+        if love.keyboard.isDown("w") then moveY = moveY - 1 end
+        if love.keyboard.isDown("a") then moveX = moveX - 1 end
+        if love.keyboard.isDown("s") then moveY = moveY + 1 end
+        if love.keyboard.isDown("d") then moveX = moveX + 1 end
+        if love.keyboard.isDown("space") and self.onGround then
+            self.speed[2] = self.speed[2] - jump
+        end
     end
 
     -- do some trigonometry on the inputs to make movement relative to camera's direction

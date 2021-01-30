@@ -2,6 +2,8 @@
 local StateStack = require "statestack"
 local Game = require "states/game"
 
+local lg = love.graphics
+
 -- so that stdout happens during runtime on windows git bash
 io.stdout:setvbuf("no")
 
@@ -10,6 +12,8 @@ GAME_HEIGHT = 576
 
 function love.load()
     love.graphics.setDefaultFilter("nearest")
+
+    love.graphics.setFont(love.graphics.newFont("assets/ProggyClean.ttf", 16))
 
     -- global, so it can be accessed easily by textbox.lua
     GuiCanvas = love.graphics.newCanvas(GAME_WIDTH, GAME_HEIGHT)
@@ -54,8 +58,10 @@ function love.load()
 
 
     function love.draw(...)
-        love.graphics.setCanvas({screen, depth=true})
-        love.graphics.clear(0,0,0,0)
+        lg.setCanvas(GuiCanvas)
+        lg.clear(0,0,0,0)
+        lg.setCanvas({screen, depth=true})
+        lg.clear(0,0,0,0)
 
         local state = StateStack:peek()
         if state and state.draw then
@@ -63,10 +69,10 @@ function love.load()
         end
 
 
-        love.graphics.setCanvas()
-        local letterBox = math.min(love.graphics.getWidth()/screen:getWidth(), love.graphics.getHeight()/screen:getHeight())
-        love.graphics.draw(screen, love.graphics.getWidth()/2, love.graphics.getHeight()/2, 0, letterBox, letterBox*-1, GAME_WIDTH/2, GAME_HEIGHT/2)
-        love.graphics.draw(GuiCanvas, love.graphics.getWidth()/2, love.graphics.getHeight()/2, 0, letterBox, letterBox*1, GAME_WIDTH/2, GAME_HEIGHT/2)
+        lg.setCanvas()
+        local letterBox = math.min(lg.getWidth()/screen:getWidth(), lg.getHeight()/screen:getHeight())
+        lg.draw(screen, lg.getWidth()/2, lg.getHeight()/2, 0, letterBox, letterBox*-1, GAME_WIDTH/2, GAME_HEIGHT/2)
+        lg.draw(GuiCanvas, lg.getWidth()/2, lg.getHeight()/2, 0, letterBox, letterBox*1, GAME_WIDTH/2, GAME_HEIGHT/2)
     end
 
     -- function love.keypressed(k)
