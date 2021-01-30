@@ -1,95 +1,6 @@
-
-local locations = {
-    'patio',
-    'pool',
-    'kitchen',
-    'backyard',
-    'garage',
-    'theater',
-    'living room'
-}
-
-local weapons = {
-    'knife',
-    'candlestick',
-    'trophy',
-    'rope',
-    'pistol',
-    'soap',
-    'poison'
-}
-
-local people = {
-    'red',
-    'blue',
-    'green',
-    'yellow',
-    'blue',
-    'purple',
-    'white'
-}
-
--- Creates an array from the range i to j (inclusive)
-function range (i, j)
-    ret = {}
-    for x = i, j do
-        ret[x - i + 1] = i
-    end
-    return ret
-end
-
--- Creates a permutation of the given array
-function shuffle (array)
-    local ret = {}
-    for i, v in ipairs(array) do
-        -- Place the item in a random spot in the array.
-        while true do
-            local index = math.random(1, #array)
-            if not ret[index] then
-                ret[index] = v
-                break
-            end
-        end
-    end
-
-    return ret
-end
-
---[[
-Creates a person.
-
-Fields:
- - ask (what)        A function to ask about the murder. The 'what' field is what
-                     field of 'known' to ask about, i.e. 'person', 'location', or
-                     'weapon'. Returns two values. The first value is the answer or
-                     nil if they are unwilling to answer the question. The second
-                     value is a string representing their dialog.
- - onMakeAccusation  Called when the user makes an accusation
- - onAccused         Called when the user accuses this person
-]]
-function makePerson (props)
-    local known = props.known
-
-    local ret = {
-        ask = function (what)
-            local dialogue
-            if what == 'weapon' then
-                dialogue = weapons[known[what]]
-            elseif what == 'person' then
-                dialogue = people[known[what]]
-            elseif what == 'location' then
-                dialogue = locations[known[what]]
-            end
-            return known[what], dialogue
-        end,
-        onMakeAccusation = function (props)
-        end,
-        onAccused = function (props)
-        end
-    }
-
-    return ret
-end
+-- imports
+local Person = require "person"
+local lume = require "lume"
 
 --[[
 Creates the game state.
@@ -104,143 +15,93 @@ Fields:
                    person's response or nil if they won't answer the question,
                    the second is their dialogue.
 ]]
-function makeGame ()
-    -- Create permutations of each field.
-    local weapons = shuffle(range(1, 7))
-    local people = shuffle(range(1, 7))
-    local locations = shuffle(range(1, 7))
-    local truth
 
-    local ret = {
-        people = {}
+local wordRepresentations = {
+    locations = {
+        "patio",
+        "pool",
+        "kitchen",
+        "backyard",
+        "garage",
+        "theater",
+        "living room"
+    },
+
+    weapons = {
+        "knife",
+        "candlestick",
+        "trophy",
+        "rope",
+        "pistol",
+        "soap",
+        "poison"
+    },
+
+    people = {
+        "red",
+        "blue",
+        "green",
+        "yellow",
+        "blue",
+        "purple",
+        "white"
     }
+}
 
-    -- Create the people.
-    for i = 1, 7 do
-        local known = {
-            weapon = weapons[i],
-            person = people[i],
-            location = locations[i]
-        }
-        if i == 7 then
-            truth = known
-        else
-            ret.people[i] = makePerson {
-                known = known
-            }
-        end
-    end
-
-    ret.accuse = function (props)
-        if (truth.person == props.person and
-            truth.location == props.location and
-            truth.weapon == props.weapon) then
-            return true
-        else
-            for i, person in ret.people do
-                person.onMakeAccusation(props)
-                if i == props.person then
-                    person.onAccused(props)
-                end
-            end
-        end
-    end
-
-    ret.ask = function (props)
-        return ret.people[props.person].ask(props.what)
-    end
-
+-- Creates an array from the range i to j (inclusive)
+local function range(n)
+    local ret = {}
+    for i=1, n do ret[i] = i end
     return ret
 end
 
--- Returns the index of the value in the given table or nil.
-function indexOf (table, value)
-    for i, v in ipairs(table) do
-        if v == value then
-            return i
+-- create the Game class
+local Game = {}
+Game.__index = Game
+
+function Game:new(personCount)
+    local self = setmetatable({}, Game)
+
+    -- Create permutations of each field.
+    local weaponsDeck = lume.shuffle(range(personCount))
+    local peopleDeck = lume.shuffle(range(personCount))
+    local locationsDeck = lume.shuffle(range(personCount))
+
+    self.people = {}
+
+    -- Create the people.
+    for i=1, personCount do
+        local known = {
+            weapon = wordRepresentations.weapons[weaponsDeck[i]],
+            person = wordRepresentations.people[peopleDeck[i]],
+            location = wordRepresentations.locations[locationsDeck[i]],
+        }
+
+        if i == personCount then
+            self.truth = known
+        else
+            -- a person's index in self.people is their name
+            local name = wordRepresentations.people[i]
+            self.people[name] = Person:new(name, known)
         end
     end
-    return nil
+
+    return self
 end
 
-function cmdlineGame ()
-    print([[Commands:
-
-ask [name] [weapon|location|name]   Ask the person with the given name what they
-                                    saw.
-accuse [weapon] [location] [name]   Accuse the given person of commiting the
-                                    murder.
-
-Examples:
-ask red weapon
-
-People:
-]])
-    for i, v in ipairs(people) do
-        print(v)
-    end
-    print([[
-Locations:
-]])
-    for i, v in ipairs(locations) do
-        print(v)
-    end
-    print([[
-Weapons:
-]])
-    for i, v in ipairs(weapons) do
-        print(v)
-    end
-    print()
-
-    local game = makeGame()
-
-    function parseArgs (table, arg)
-        local value = indexOf(people, arg)
-        if not value then
-            value = indexOf(locations, arg)
-            if not value then
-                value = indexOf(weapons, arg)
-                table.weapon = value
-                if not value then
-                    return false
-                end
-            else
-                table.location = value
-            end
-        else
-            table.people = value
-        end
+function Game:accuse(person, weapon, place)
+    if self.truth.person == person and self.truth.location == location and self.truth.weapon == weapon then
+        print(person .. ": Argh! You got me!")
         return true
     end
 
-    for line in io.lines() do
-        local verb, args = string.match(line, '(%w+) (.*)')
-        if verb == 'ask' then
-            local a1, a2 = string.match(args, '(%w+) (%w+)')
-            result, dialog = game.ask {
-                person = indexOf(people, a1),
-                what = a2
-            }
-            print(dialog)
-        elseif verb == 'accuse' then
-            local a1, a2, a3 = string.match(args, '(%w+) (%w+) (%w+)')
-            local args = {}
-            if (parseArgs(args, a1) and
-                parseArgs(args, a2) and
-                parseArgs(args, a3)) then
-                if game.accuse(args) then
-                    print('you win!')
-                else
-                    print('nope')
-                end
-            else
-                print('unknown arguments')
-            end
-        else
-            print('unknown command')
-        end
-    end
+    self.people[person]:onAccused()
+
+    return false
 end
 
-cmdlineGame()
+function Game:ask(person, what)
+    return self.people[person]:ask(what)
+end
+
+return Game
