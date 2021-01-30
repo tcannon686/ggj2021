@@ -1,5 +1,7 @@
 -- imports
+local g3d = require "g3d"
 local Person = require "person"
+local Player = require "player"
 local lume = require "lume"
 
 --[[
@@ -48,13 +50,6 @@ local wordRepresentations = {
     }
 }
 
--- Creates an array from the range i to j (inclusive)
-local function range(n)
-    local ret = {}
-    for i=1, n do ret[i] = i end
-    return ret
-end
-
 -- create the Game class
 local Game = {}
 Game.__index = Game
@@ -62,14 +57,24 @@ Game.__index = Game
 function Game:new(personCount)
     local self = setmetatable({}, Game)
 
-    -- Create permutations of each field.
+    local function range(n)
+        local ret = {}
+        for i=1, n do ret[i] = i end
+        return ret
+    end
+
+    -- create permutations of each field
     local weaponsDeck = lume.shuffle(range(personCount))
     local peopleDeck = lume.shuffle(range(personCount))
     local locationsDeck = lume.shuffle(range(personCount))
 
+    self.map = g3d.newModel("assets/map.obj", "assets/tileset.png", {-2, 2.5, -3.5}, nil, {-1,-1,1})
+    self.background = g3d.newModel("assets/sphere.obj", "assets/starfield.png", {0,0,0}, nil, {500,500,500})
+    self.player = Player:new(0,0,0, self.map)
+
     self.people = {}
 
-    -- Create the people.
+    -- create all the people
     for i=1, personCount do
         local known = {
             weapon = wordRepresentations.weapons[weaponsDeck[i]],
@@ -87,6 +92,28 @@ function Game:new(personCount)
     end
 
     return self
+end
+
+function Game:update(dt)
+    self.player:update(dt)
+
+    for _, person in pairs(self.people) do
+        person:update(dt, self)
+    end
+end
+
+function Game:mousemoved(x,y, dx,dy)
+    g3d.camera.firstPersonLook(dx,dy)
+end
+
+function Game:draw()
+    --self.player:draw()
+    self.background:draw()
+    self.map:draw()
+
+    for _, person in pairs(self.people) do
+        person:draw(self)
+    end
 end
 
 function Game:accuse(person, weapon, place)

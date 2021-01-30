@@ -1,3 +1,5 @@
+local g3d = require "g3d"
+
 --[[
 Creates a person.
 
@@ -21,6 +23,8 @@ function Person:new(name, known)
     self.name = name
     self.known = known
 
+    self.model = g3d.newModel("assets/vertical_plane.obj", "assets/person1.png", {0,1.6,2}, {0,0,0}, {0.4,0.4,0.4})
+
     return self
 end
 
@@ -30,6 +34,31 @@ end
 
 function Person:onAccused(props)
     print(self.name .. ": I can't believe you would accuse me! >:(")
+end
+
+function Person:update(dt, game)
+    local playerpos = game.player.position
+    local playerDistance = self.model:getDistanceFrom(playerpos[1], playerpos[2], playerpos[3])
+
+    if playerDistance < 0.75 then
+        -- player has now initiated a conversation with this person
+
+        -- make the camera look at this person while talking
+        --[[
+        if playerDistance > 0.1 then
+            g3d.camera.target[1] = self.model.translation[1]
+            g3d.camera.target[2] = self.model.translation[2] - 0.05
+            g3d.camera.target[3] = self.model.translation[3]
+            g3d.camera.updateViewMatrix()
+        end
+        ]]
+    end
+
+    self.model:setRotation(self.model.rotation[1], math.atan2(self.model.translation[3] - playerpos[3], self.model.translation[1] - playerpos[1])*-1, self.model.rotation[3])
+end
+
+function Person:draw(game)
+    self.model:draw()
 end
 
 return Person
