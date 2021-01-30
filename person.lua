@@ -1,4 +1,6 @@
 local g3d = require "g3d"
+local TextState = require "states/text"
+local StateStack = require "statestack"
 
 --[[
 Creates a person.
@@ -40,16 +42,14 @@ function Person:update(dt, game)
     local playerpos = game.player.position
     local playerDistance = self.model:getDistanceFrom(playerpos[1], playerpos[2], playerpos[3])
 
-    if playerDistance < 0.75 then
+    if playerDistance < 0.75 and game == StateStack.peek() then
         -- player has now initiated a conversation with this person
+        StateStack.push(TextState:new("hello there", self.model.translation))
+        print("test")
 
         -- make the camera look at this person while talking
         --[[
         if playerDistance > 0.1 then
-            g3d.camera.target[1] = self.model.translation[1]
-            g3d.camera.target[2] = self.model.translation[2] - 0.05
-            g3d.camera.target[3] = self.model.translation[3]
-            g3d.camera.updateViewMatrix()
         end
         ]]
     end

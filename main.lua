@@ -1,31 +1,41 @@
 -- imports
-local Game = require "game"
+local StateStack = require "statestack"
+local Game = require "states/game"
 
+-- so that stdout happens during runtime on windows git bash
 io.stdout:setvbuf("no")
 
 function love.load()
     love.graphics.setBackgroundColor(0.25,0.5,1)
     love.graphics.setDefaultFilter("nearest")
 
-    local game = Game:new(7)
+    -- push a game with 7 people onto the StateStack
+    StateStack.push(Game:new(7))
 
-    function love.mousemoved(x,y, dx,dy)
-        game:mousemoved(x,y,dx,dy)
+    -- define all the love callback functions in love.load
+    -- so that they can reference the local variables in love.load
+    function love.mousemoved(...)
+        local state = StateStack:peek()
+        if state and state.mousemoved then
+            state:mousemoved(...)
+        end
     end
 
-    function love.update(dt)
-        game:update(dt)
+    function love.update(...)
+        local state = StateStack:peek()
+        if state and state.update then
+            state:update(...)
+        end
+    end
+
+    function love.draw(...)
+        local state = StateStack:peek()
+        if state and state.draw then
+            state:draw(...)
+        end
     end
 
     function love.keypressed(k)
         if k == "escape" then love.event.push("quit") end
     end
-
-    function love.draw()
-        game:draw()
-    end
-end
-
-function distance(x1,y1,z1, x2,y2,z2)
-    return math.sqrt((x1-x2)^2 + (y1-y2)^2 + (z1-z2)^2)
 end
