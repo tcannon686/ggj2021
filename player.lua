@@ -1,3 +1,5 @@
+local g3d = require "g3d"
+
 local Player = {}
 Player.__index = Player
 

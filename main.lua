@@ -1,5 +1,5 @@
 -- imports
-g3d = require "g3d"
+local g3d = require "g3d"
 local Game = require "game"
 local Player = require "player"
 
