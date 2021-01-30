@@ -92,7 +92,7 @@ function Textbox:draw(game)
     end
 
     -- draw the animated arrow telling you to go on to the next text box
-    if self:doneScrollingText() and self.textIndex < #self.text then
+    if self:doneScrollingText() and self.textIndex < #self.text and not self:isInChoiceMode() then
         lg.draw(self.nextSprite, GAME_WIDTH-64-18, GAME_HEIGHT-64 + math.floor(math.sin(self.textScroll/3))*4)
     end
 
@@ -107,12 +107,40 @@ function Textbox:onDestroy()
     self.personTalkingTo.model.translation[2] = self.personTalkingToTranslation
 end
 
+function Textbox:proceed()
+    if not self:doneScrollingText() then return end
+
+    self.textIndex = self.textIndex + 1
+    self.textScroll = 0
+end
+
 function Textbox:mousepressed(k)
     -- when the player clicks
     -- go on to the next text box
-    if k == 1 and self:doneScrollingText() then
-        self.textIndex = self.textIndex + 1
-        self.textScroll = 0
+    if k == 1 and self:doneScrollingText() and not self:isInChoiceMode() then
+        self:proceed()
+    end
+end
+
+function Textbox:keypressed(k)
+    -- if you press the corresponding key in choice mode
+    -- then insert the answer as the next piece of text in the sequence
+
+    if self:isInChoiceMode() then
+        if k == "1" then
+            table.insert(self.text, self.textIndex+1, self.personTalkingTo:ask("person"))
+            self:proceed()
+        end
+
+        if k == "2" then
+            table.insert(self.text, self.textIndex+1, self.personTalkingTo:ask("weapon"))
+            self:proceed()
+        end
+
+        if k == "3" then
+            table.insert(self.text, self.textIndex+1, self.personTalkingTo:ask("location"))
+            self:proceed()
+        end
     end
 end
 
