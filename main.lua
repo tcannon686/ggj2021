@@ -40,7 +40,6 @@ function love.load()
     end
 
     function love.keypressed(...)
-
         if ({...})[1] == "escape" then love.event.push("quit") end
 
         local state = StateStack:peek()
@@ -68,14 +67,9 @@ function love.load()
             state:draw(...)
         end
 
-
         lg.setCanvas()
         local letterBox = math.min(lg.getWidth()/screen:getWidth(), lg.getHeight()/screen:getHeight())
         lg.draw(screen, lg.getWidth()/2, lg.getHeight()/2, 0, letterBox, letterBox*-1, GAME_WIDTH/2, GAME_HEIGHT/2)
         lg.draw(GuiCanvas, lg.getWidth()/2, lg.getHeight()/2, 0, letterBox, letterBox*1, GAME_WIDTH/2, GAME_HEIGHT/2)
     end
-
-    -- function love.keypressed(k)
-    --     if k == "escape" then love.event.push("quit") end
-    -- end
 end

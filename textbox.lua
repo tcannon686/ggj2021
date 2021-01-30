@@ -4,6 +4,12 @@ local lg = love.graphics
 local Textbox = {}
 Textbox.__index = Textbox
 
+local choiceText = [[
+[1] Who did you see?
+[2] What weapon did you see?
+[3] Where did you see them?
+]]
+
 function Textbox:new(text, personTalkingTo)
     local self = setmetatable({}, Textbox)
 
@@ -47,15 +53,30 @@ function Textbox:update(dt, game)
     end
 end
 
+function Textbox:isInChoiceMode()
+    return self.text[self.textIndex] and self.text[self.textIndex] == "CHOICE"
+end
+
 function Textbox:getCurrentText()
+    -- if in choice mode, don't do the typewriter effect
+    if self:isInChoiceMode() then
+        return choiceText
+    end
+
     return self.text[self.textIndex] and self.text[self.textIndex]:sub(0, math.floor(self.textScroll + 0.5))
 end
 
 function Textbox:doneScrollingText()
+    -- if in choice mode, don't do the typewriter effect
+    if self:isInChoiceMode() then
+        return true
+    end
+
     return self.text[self.textIndex] and self:getCurrentText() == self.text[self.textIndex]
 end
 
 function Textbox:draw(game)
+    -- we have to render gui elements to GuiCanvas for reasons
     local prevCanvas = lg.getCanvas()
     lg.setCanvas(GuiCanvas)
     lg.clear(0,0,0,0)
@@ -75,6 +96,8 @@ function Textbox:draw(game)
         lg.draw(self.nextSprite, GAME_WIDTH-64-18, GAME_HEIGHT-64 + math.floor(math.sin(self.textScroll/3))*4)
     end
 
+    -- set the canvas back to the previous one
+    -- it's probably the 3D canvas, so set depth to true
     lg.setCanvas({prevCanvas, depth=true})
 end
 

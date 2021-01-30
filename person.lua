@@ -17,8 +17,9 @@ function Person:new(name, known)
     self.model = g3d.newModel("assets/vertical_plane.obj", "assets/person1.png", position, {0,0,0}, {0.4,0.4,0.4})
     self.text = {
         "this is a super long piece of text oh god i hope it word wraps around the textbox correctly oh jeez oh fuck oh shit",
-        "i will have sexual intercourse with your mother",
-        "joey didnt get added to the repo",
+        "CHOICE",
+        "i had sexual intercourse with your mother last night",
+        "joey didnt get added to the repo lol",
     }
     self.speaking = false
     self.inSpeakingRange = false
