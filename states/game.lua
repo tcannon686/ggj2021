@@ -72,6 +72,8 @@ function Game:new(personCount)
     self.background = g3d.newModel("assets/sphere.obj", "assets/starfield.png", {0,0,0}, nil, {500,500,500})
     self.player = Player:new(0,0,0, self.map)
 
+    self.textbox = nil
+
     self.people = {}
 
     -- create all the people
@@ -95,11 +97,16 @@ function Game:new(personCount)
 end
 
 function Game:update(dt)
-    self.player:update(dt)
+    -- only update the player if there is no active textbox
+    if not self.textbox then
+        self.player:update(dt)
+    end
 
     for _, person in pairs(self.people) do
         person:update(dt, self)
     end
+
+    if self.textbox then self.textbox:update(dt, self) end
 end
 
 function Game:mousemoved(x,y, dx,dy)
@@ -114,6 +121,8 @@ function Game:draw()
     for _, person in pairs(self.people) do
         person:draw(self)
     end
+
+    if self.textbox then self.textbox:draw(self) end
 end
 
 function Game:accuse(person, weapon, place)

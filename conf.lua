@@ -4,4 +4,5 @@ function love.conf(t)
     t.window.height = 576
     --t.window.fullscreen = true
     t.window.title = "fps demo"
+    t.window.resizable = true
 end
