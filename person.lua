@@ -26,6 +26,9 @@ function Person:new(name, known)
     self.known = known
 
     self.model = g3d.newModel("assets/vertical_plane.obj", "assets/person1.png", {0,1.6,2}, {0,0,0}, {0.4,0.4,0.4})
+    self.text = {"hello there", "Ill fuck your mom", "joey didnt get added to the repo"}
+    self.speaking = false
+    self.inSpeakingRange = false
 
     return self
 end
@@ -42,9 +45,15 @@ function Person:update(dt, game)
     local playerpos = game.player.position
     local playerDistance = self.model:getDistanceFrom(playerpos[1], playerpos[2], playerpos[3])
 
-    if playerDistance < 0.75 then
+    if playerDistance < 0.75 and not game.textbox then
         -- player has now initiated a conversation with this person
-        game.textbox = Textbox:new("hello there")
+        self.inSpeakingRange = true
+        if self.speaking and not game.textbox then
+            game.textbox = Textbox:new(self.text)
+        end
+    else
+        self.inSpeakingRange = false
+        self.speaking = false
     end
 
     self.model:setRotation(self.model.rotation[1], math.atan2(self.model.translation[3] - playerpos[3], self.model.translation[1] - playerpos[1])*-1, self.model.rotation[3])
@@ -52,6 +61,13 @@ end
 
 function Person:draw(game)
     self.model:draw()
+end
+
+function Person:mousepressed(k)
+    if self.inSpeakingRange and k == 1 then
+        print("zch is gay")
+        self.speaking = true
+    end
 end
 
 return Person

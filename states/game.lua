@@ -140,4 +140,19 @@ function Game:ask(person, what)
     return self.people[person]:ask(what)
 end
 
+function Game:keypressed(k)
+    if self.textbox then
+        self.textbox:keypressed(k)
+    end
+end
+
+function Game:mousepressed(k)
+    for _, person in pairs(self.people) do
+        person:mousepressed(k)
+    end
+    if self.textbox then
+        self.textbox:mousepressed(k)
+    end
+end
+
 return Game

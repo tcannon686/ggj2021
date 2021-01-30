@@ -35,6 +35,24 @@ function love.load()
         end
     end
 
+    function love.keypressed(...)
+
+        if ({...})[1] == "escape" then love.event.push("quit") end
+
+        local state = StateStack:peek()
+        if state and state.keypressed then
+            state:keypressed(...)
+        end
+    end
+
+     function love.mousepressed(...)
+        local state = StateStack:peek()
+        if state and state.mousepressed then
+            state:mousepressed(({...})[3])
+        end
+    end
+
+
     function love.draw(...)
         love.graphics.setCanvas({screen, depth=true})
         love.graphics.clear(0,0,0,0)
@@ -51,7 +69,7 @@ function love.load()
         love.graphics.draw(GuiCanvas, love.graphics.getWidth()/2, love.graphics.getHeight()/2, 0, letterBox, letterBox*1, GAME_WIDTH/2, GAME_HEIGHT/2)
     end
 
-    function love.keypressed(k)
-        if k == "escape" then love.event.push("quit") end
-    end
+    -- function love.keypressed(k)
+    --     if k == "escape" then love.event.push("quit") end
+    -- end
 end
