@@ -1,6 +1,7 @@
 local g3d = require "g3d"
 local Textbox = require "textbox"
 local StateStack = require "statestack"
+local lume = require "lume"
 
 -- define the person class
 local Person = {}
@@ -12,8 +13,13 @@ function Person:new(name, known)
     self.name = name
     self.known = known
 
-    self.model = g3d.newModel("assets/vertical_plane.obj", "assets/person1.png", {0,1.6,2}, {0,0,0}, {0.4,0.4,0.4})
-    self.text = {"hello there", "I'll fuck your mom", "joey didnt get added to the repo"}
+    local position = {lume.random(-2,2), 1.6, lume.random(-2,2)}
+    self.model = g3d.newModel("assets/vertical_plane.obj", "assets/person1.png", position, {0,0,0}, {0.4,0.4,0.4})
+    self.text = {
+        "this is a super long piece of text oh god i hope it word wraps around the textbox correctly oh jeez oh fuck oh shit",
+        "i will have sexual intercourse with your mother",
+        "joey didnt get added to the repo",
+    }
     self.speaking = false
     self.inSpeakingRange = false
 
