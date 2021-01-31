@@ -1,0 +1,71 @@
+local Dialogue = {}
+Dialogue.__index = Dialogue
+
+function Dialogue:new(name)
+    local self = setmetatable({}, Dialogue)
+    self.name = name
+
+    if name == "Crimson Reddington" then
+    	self.text = {
+    		"Bold of you to approach me with such a humble cut, peasant.",
+    		"I do hope you do your job quickly so I can get back to my tea and feminine company",
+        	"CHOICE",
+        	"Now go, before I catch one of those plagues you people are so fond of.",
+        	"Street rat.",
+    	}
+    elseif name == "Aqua Bloomberg" then
+    	self.text = {
+    		"Ah, hello detective.",
+    		"The innocent die and the guilty prosper, I suppose.",
+        	"CHOICE",
+        	"I do hope this information proves useful, detective.",
+        	"Au revoir.",
+    	}
+    elseif name == "Lief Greenhand" then
+    	self.text = {
+    		"Hi! I'm Lief! Let me know if I can help!",
+    		"You sure have a sparkle in your eye for someone investigating a murder case, detective. How peculiar!",
+        	"CHOICE",
+        	"Oh! I get it! You're doing detective stuff with these clues, aren't you!",
+        	"Wait, did someone take my biscuit?",
+    	}
+    elseif name == "Dick Goldmember" then
+    	self.text = {
+    		"Listen here, bumpkin.",
+    		"Now, ya might think yer cool just cuz you're some kinda badass harbinger of justice, but yer nothing compared to me!",
+    		"Oh, and stay away from the ladies tonight, will ya?",
+        	"CHOICE",
+        	"It's not like I want to aid in your investigation or anything.",
+    	}
+    elseif name == "Bob Gray" then
+    	self.text = {
+    		"Hmm. Hey.",
+    		"I'm Bob.",
+    		"Don't call me Bob though.",
+    		"So, what do you want?",
+        	"CHOICE",
+        	"Move along, now.",
+        	"Can't you see I'm busy?",
+    	}
+    elseif name == "Violet Purpov" then
+    	self.text = {
+    		"Hey there, cutie.",
+    		"What's a fine piece of man like yourself doing in a place like this?",
+        	"CHOICE",
+        	"I see you're a man that sticks to his job.",
+        	"Come back if you want to sneak out to the garden.",
+    	}
+    elseif name == "Wilson White" then
+    	self.text = {
+    		"Uh, hey, uh, hehe...",
+    		"What brings you over here, detective?",
+    		"N-not that I have a problem with that...",
+        	"CHOICE",
+        	"That's all I know! I swear!",
+        	"*Incoherent murmuring*",
+    	}
+    end
+
+    return self
+end
+return Dialogue

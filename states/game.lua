@@ -89,7 +89,7 @@ end
 local function makeSus(graph, susPerson)
     for name,connectionList in pairs(graph) do
         for i,connection in pairs(connectionList) do
-            if connection == susPerson then 
+            if connection == susPerson then
                 connectionList[i] = nil
                 return
             end
@@ -109,7 +109,7 @@ local function tableLength(T)
         count = count + 1
     end
     return count
-end 
+end
 
 local function makeRandomSus(people, graphList, murderer)
 

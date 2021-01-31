@@ -2,6 +2,7 @@ local g3d = require "g3d"
 local Textbox = require "textbox"
 local StateStack = require "statestack"
 local lume = require "lume"
+local Dialogue = require "dialogue"
 
 -- define the person class
 local Person = {}
@@ -16,12 +17,17 @@ function Person:new(name, known)
     local position = {lume.random(-2,2), 1.6, lume.random(-2,2)}
     local texture = lume.randomchoice({"assets/person1.png", "assets/person2.png"})
     self.model = g3d.newModel("assets/vertical_plane.obj", texture, position, {0,0,0}, {0.4,0.4,0.4})
-    self.text = {
-        "making this short cus I'm impatient",
-        "CHOICE",
-        -- "i had sexual intercourse with your mother last night",
-        -- "joey didnt get added to the repo lol",
-    }
+
+    -- self.text = {
+    --     "making this short cus I'm impatient",
+    --     "CHOICE",
+    --     -- "i had sexual intercourse with your mother last night",
+    --     -- "joey didnt get added to the repo lol",
+    -- }
+
+    local dialogue = Dialogue:new(name)
+    self.text = dialogue.text
+
     self.speaking = false
     self.inSpeakingRange = false
 
