@@ -57,13 +57,37 @@ local function makeGraph()
     return graph, connectionCount
 end
 
-local murderer = math.random(#people)
-local blueGraph, blueConnectionCount = makeGraph()
-
-for name,connectionList in pairs(blueGraph) do
-    local str = name .. ": "
-    for _,connection in pairs(connectionList) do
-        str = str .. connection .. " "
+local function printGraph(graph)
+    for name,connectionList in pairs(graph) do
+        local str = name .. ": "
+        for _,connection in pairs(connectionList) do
+            str = str .. connection .. " "
+        end
+        print(str)
     end
-    print(str)
 end
+
+local function makeMurderer(graph, murderer)
+    for name,connectionList in pairs(graph) do
+        for i,connection in pairs(connectionList) do
+            if connection == murderer then connectionList[i] = nil end
+        end
+    end
+end
+
+math.randomseed(os.time())
+local murderer = people[math.random(#people)]
+local blueGraph, blueConnectionCount = makeGraph()
+local redGraph, redConnectionCount = makeGraph()
+
+-- printGraph(blueGraph)
+-- print("-----")
+-- printGraph(redGraph)
+print("MURDERER: " .. murderer)
+
+makeMurderer(blueGraph, murderer)
+makeMurderer(redGraph, murderer)
+
+printGraph(blueGraph)
+print("-----")
+printGraph(redGraph)
