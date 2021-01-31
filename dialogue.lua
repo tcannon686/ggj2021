@@ -22,7 +22,7 @@ function Dialogue:new(name, debugMode)
         self.uncooperative = {
             "I don't want to talk to you anymore.",
         }
-        self.uncooperative = {
+        self.noAnswer = {
         	"Nah bith"
         }
     elseif name == "Crimson Reddington" then
@@ -52,6 +52,9 @@ function Dialogue:new(name, debugMode)
         	"Jest elsewhere.",
         	"I should have your neck for your petty insolence."
         }
+        self.noAnswer = {
+            "I have no obligation to answer such a question.",
+        }
     elseif name == "Aqua Bloomberg" then
     	self.text = {
     		{
@@ -78,6 +81,9 @@ function Dialogue:new(name, debugMode)
         	"Don't expect any favors from me dear.",
         	"I'm quite upset with you.",
         	"...",
+        }
+        self.noAnswer = {
+            "I never thought someone like you would say such a thing!"
         }
     elseif name == "Lief Greenhand" then
     	self.text = {
@@ -106,6 +112,9 @@ function Dialogue:new(name, debugMode)
         	"Leave! I don't wanna talk to you!",
         	"So rude, man. Just cold.",
         }
+        self.noAnswer = {
+            "Asking that really hurt my feelings. Please go away,"
+        }
     elseif name == "Dick Goldmember" then
     	self.text = {
     		{
@@ -132,6 +141,9 @@ function Dialogue:new(name, debugMode)
         	"Dude, we are not chill anymore.",
         	"Go away, man. We aren't homies.",
         	"You ruined my vibe man. My vibe! Bounce.",
+        }
+        self.noAnswer = {
+            "Look dude, im sure you're a nice guy but no was am I telling you that."
         }
     elseif name == "Bob Gray" then
     	self.text = {
@@ -162,6 +174,9 @@ function Dialogue:new(name, debugMode)
         	"Maybe next game.",
         	"Vacate my space."
         }
+        self.noAnswer = {
+            "I will not answer that..."
+        }
     elseif name == "Violet Purpov" then
     	self.text = {
     		{
@@ -188,6 +203,9 @@ function Dialogue:new(name, debugMode)
         	"You're rude. Leave me alone.",
         	"And here I thought detectives were gentlemen. Go somewhere else.",
         	"Arrest me if you want. I'm not talking to you, pig."
+        }
+        self.noAnswer = {
+            "I've met a lot of men, but you're the first one to ask me something like that!"
         }
     elseif name == "Wilson White" then
     	self.text = {
@@ -216,6 +234,9 @@ function Dialogue:new(name, debugMode)
         	"I want a lawyer!",
         	"Hey, wait, you never had solid evidence! Are you really a detective?",
         	"My feelings are still hurt after what you said about me.",
+        }
+        self.noAnswer = {
+            "Uh, Uhhmmmm, I don't know what to say to that."
         }
     end
 

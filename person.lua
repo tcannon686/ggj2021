@@ -107,7 +107,7 @@ function Person:ask(what)
     end
 
     if what == 3 then
-        return "I'm not answering that, sorry."
+        return self.dialogue.noAnswer[1]
     end
     -- return self.known[what]
     return nil
