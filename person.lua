@@ -138,12 +138,17 @@ function Person:update(dt, game)
                 self.accused = false
             else
                 if self.hasBeenAccused then
-                    game.textbox = Textbox:new(self.dialogue.uncooperative, self)
+                    game.textbox = Textbox:new({lume.randomchoice(self.dialogue.uncooperative)}, self)
                 else
                     if not self.beenSpokenTo then
-                        game.textbox = Textbox:new(self.dialogue.text, self)
+                        local text = {
+                            lume.randomchoice(self.dialogue.text[1]),
+                            "CHOICE",
+                            lume.randomchoice(self.dialogue.text[2]),
+                        }
+                        game.textbox = Textbox:new(text, self)
                     else
-                        game.textbox = Textbox:new(self.dialogue.spokenToText, self)
+                        game.textbox = Textbox:new({lume.randomchoice(self.dialogue.spokenToText)}, self)
                     end
                 end
             end
