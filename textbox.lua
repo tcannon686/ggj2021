@@ -64,6 +64,11 @@ function Textbox:new(text, personTalkingTo)
     self.textScroll = 0
     self.nextSprite = lg.newImage("assets/textnext.png")
 
+    self.nextSound = love.audio.newSource("sfx/next_text.wav", "static")
+    self.nextSound:setVolume(0.1)
+    self.doneSound = love.audio.newSource("sfx/done_text.wav", "static")
+    self.doneSound:setVolume(0.5)
+
     self.personTalkingTo = personTalkingTo
     -- store the initial values of the person's transform
     -- so they can be reverted back to later
@@ -145,12 +150,18 @@ function Textbox:onDestroy()
     -- reset the person that is talking back to their pre-animated state
     self.personTalkingTo.model.scale[2] = self.personTalkingToScale
     self.personTalkingTo.model.translation[2] = self.personTalkingToTranslation
+    love.audio.stop(self.doneSound)
+    love.audio.play(self.doneSound)
 end
 
 function Textbox:proceed()
     if not self:doneScrollingText() then return end
 
     self.textIndex = self.textIndex + 1
+    if self.text[self.textIndex] then
+        love.audio.stop(self.nextSound)
+        love.audio.play(self.nextSound)
+    end
     self.textScroll = 0
 end
 

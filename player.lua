@@ -1,4 +1,5 @@
 local g3d = require "g3d"
+local lume = require "lume"
 
 local Player = {}
 Player.__index = Player
@@ -24,6 +25,16 @@ function Player:new(x,y,z, collisionMap)
     self.onGround = false
     self.stepDownSize = 0.075
     self.collisionMap = collisionMap
+
+    self.footstepSounds = {
+        love.audio.newSource("sfx/Light  Wood footsteps 1.wav", "static"),
+        love.audio.newSource("sfx/Light  Wood footsteps 2.wav", "static"),
+        love.audio.newSource("sfx/Light  Wood footsteps 3.wav", "static"),
+        love.audio.newSource("sfx/Light  Wood footsteps 4.wav", "static"),
+        love.audio.newSource("sfx/Light  Wood footsteps 5.wav", "static"),
+    }
+    self.footstepTimer = 0
+
     return self
 end
 
@@ -103,7 +114,7 @@ end
 function Player:fixedUpdate(dt, game)
     -- collect inputs
     local moveX,moveY = 0,0
-    local speed = 0.015
+    local speed = 0.01
     local friction = 0.75
     local gravity = 0.005
     local jump = 1/12
@@ -144,6 +155,19 @@ function Player:fixedUpdate(dt, game)
     -- ground check
     local wasOnGround = self.onGround
     self.onGround = ny and ny < -0.7
+
+    if self.onGround then
+        local speedLength = math.sqrt(self.speed[1]^2 + self.speed[2]^2 + self.speed[3]^2)
+        self.footstepTimer = self.footstepTimer + speedLength
+
+        if self.footstepTimer > 0.75 then
+            self.footstepTimer = 0
+            local sound = lume.randomchoice(self.footstepSounds)
+            sound:setVolume(0.1)
+            love.audio.stop(sound)
+            love.audio.play(sound)
+        end
+    end
 
     -- smoothly walk down slopes
     if not self.onGround and wasOnGround and self.speed[2] > 0 then

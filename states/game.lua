@@ -170,6 +170,8 @@ function Game:new(personCount)
 
     self.magnifyingGlass = lg.newImage("assets/magnifying_glass.png")
 
+    self.accusedSound = love.audio.newSource("sfx/accuse.wav", "stream")
+
     local locations = {
         {2.5, 1.6, 2},
         {2.25, 1.6, 5.8},
