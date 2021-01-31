@@ -160,7 +160,7 @@ function Game:new(personCount)
     self.player = Player:new(0,0,0, self.map)
 
     self.textbox = nil
-    self.timer = 300
+    self.timer = 10
 
     self.people = {}
 
@@ -210,8 +210,12 @@ function Game:draw()
     local prevCanvas = lg.getCanvas()
     lg.setCanvas(GuiCanvas)
     
-    local currTime = math.floor(self.timer)
-    lg.print("Time left: " .. math.floor(currTime/60) ..":" .. currTime % 60, 0, 0, 0, 2)
+    local minutes = math.floor(math.floor(self.timer) / 60)
+    local seconds = math.floor(self.timer) % 60
+    if seconds < 10 then
+        seconds = "0" .. seconds
+    end
+    lg.print("Time left: " .. minutes ..":" .. seconds, 0, 0, 0, 2)
 
     lg.setCanvas({prevCanvas, depth=true})
     --------------------------------------
