@@ -156,7 +156,7 @@ function Game:new(personCount)
     printGraph(graphList)
 
     self.map = g3d.newModel("assets/house1.obj", "assets/castle.png", {0,2,0}, nil, {-1,-1,1})
-    self.background = g3d.newModel("assets/sphere.obj", "assets/starfield.png", {0,0,0}, nil, {500,500,500})
+    --self.background = g3d.newModel("assets/sphere.obj", "assets/starfield.png", {0,0,0}, nil, {500,500,500})
     self.player = Player:new(0,0,0, self.map)
 
     self.textbox = nil
@@ -199,7 +199,7 @@ end
 
 function Game:draw()
     --self.player:draw()
-    self.background:draw()
+    --self.background:draw()
     self.map:draw()
 
     for _, person in pairs(self.people) do

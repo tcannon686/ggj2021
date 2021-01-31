@@ -52,7 +52,7 @@ end
 function Player:collisionTest(mx,my,mz)
     return self.collisionMap:capsuleIntersection(
         self.position[1] + mx,
-        self.position[2] + my - 0.5,
+        self.position[2] + my - 0.15,
         self.position[3] + mz,
         self.position[1] + mx,
         self.position[2] + my + 0.5,
