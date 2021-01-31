@@ -54,7 +54,7 @@ function Game:new(personCount)
     local peopleDeck = lume.shuffle(range(personCount))
     local locationsDeck = lume.shuffle(range(personCount))
 
-    self.map = g3d.newModel("assets/map.obj", "assets/tileset.png", {-2, 2.5, -3.5}, nil, {-1,-1,1})
+    self.map = g3d.newModel("assets/house.obj", "assets/castle.png", {0,2,0}, nil, {-1,-1,1})
     self.background = g3d.newModel("assets/sphere.obj", "assets/starfield.png", {0,0,0}, nil, {500,500,500})
     self.player = Player:new(0,0,0, self.map)
 
