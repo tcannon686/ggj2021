@@ -1,6 +1,7 @@
 -- imports
 local StateStack = require "statestack"
 local Game = require "states/game"
+local Title = require "states/title"
 
 local lg = love.graphics
 
@@ -21,7 +22,8 @@ function love.load()
     local screen = love.graphics.newCanvas(GAME_WIDTH, GAME_HEIGHT)
 
     -- push a game with 7 people onto the StateStack
-    StateStack.push(Game:new(7))
+    -- StateStack.push(Game:new(7))
+    StateStack.push(Title:new())
 
     -- define all the love callback functions in love.load
     -- so that they can reference the local variables in love.load

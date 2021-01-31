@@ -47,20 +47,20 @@ function Dialogue:new(name, debugMode)
 
     if debugMode then 
         self.text = {
-            "I fucked your mom",
+            "Howdy.",
             "CHOICE"
         }
         self.spokenToText = {
-            "I dont talk to bitches like you."
+            "Good day."
         }
         self.caughtText = {
-            "I cant believe you got me motherfucker."
+            "You caught me!"
         }
         self.accusedText = {
-            "...",
-            ".....",
-            "........",
-            "where the bitches at"
+            "I'm innocent! You got the wrong person!",
+        }
+        self.uncooperative = {
+            "I don't want to talk to you anymore.",
         }
         self.uncooperative = {
         	"Nah bith"
