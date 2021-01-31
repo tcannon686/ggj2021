@@ -51,25 +51,8 @@ math.randomseed(os.time())
 
 
 
-local questionOrder = {"1", "2", "3"}
-local function createChoiceText()
-	local choiceText = ""
-	questionOrder = lume.shuffle(questionOrder)
-	for i,v in pairs(questionOrder) do
-		choiceText = choiceText .. "[" .. i .. "] "
-		if v == "1" then
-			choiceText = choiceText .. questionList[1][math.random(#questionList[1])] .. "\n"
-		elseif v == "2" then
-			choiceText = choiceText .. questionList[2][math.random(#questionList[2])] .. "\n"
-		elseif v == "3" then
-			choiceText = choiceText .. questionList[3][math.random(#questionList[3])] .. "\n"
-		end
-	end
-
-	return choiceText
-end
-
 local wrapAmount = 64
+local questionOrder = {1, 2, 3}
 
 function Textbox:new(text, personTalkingTo)
     local self = setmetatable({}, Textbox)
@@ -95,7 +78,12 @@ function Textbox:new(text, personTalkingTo)
     self.personTalkingToScale = personTalkingTo.model.scale[2]
     self.personTalkingToTranslation = personTalkingTo.model.translation[2]
 
-    self.choiceText = createChoiceText()
+    self.choiceText = ""
+    questionOrder = lume.shuffle(questionOrder)
+    for i,v in pairs(questionOrder) do
+        self.choiceText = self.choiceText .. "[" .. i .. "] "
+        self.choiceText = self.choiceText .. lume.wordwrap(questionList[v][math.random(#questionList[v])], wrapAmount) .. "\n"
+    end
 
     return self
 end
@@ -200,21 +188,12 @@ function Textbox:keypressed(k)
     -- then insert the answer as the next piece of text in the sequence
 
     if self:isInChoiceMode() then
-        if k == "1" then
-            table.insert(self.text, self.textIndex+1, lume.wordwrap(self.personTalkingTo:ask(questionOrder[1]), wrapAmount))
+        local number = tonumber(k)
+        if number and questionOrder[number] then
+            print(number, questionOrder[number])
+            table.insert(self.text, self.textIndex+1, lume.wordwrap(self.personTalkingTo:ask(questionOrder[number]), wrapAmount))
             self:proceed()
         end
-
-        if k == "2" then
-            table.insert(self.text, self.textIndex+1, lume.wordwrap(self.personTalkingTo:ask(questionOrder[2]), wrapAmount))
-            self:proceed()
-        end
-
-        if k == "3" then
-            table.insert(self.text, self.textIndex+1, lume.wordwrap(self.personTalkingTo:ask(questionOrder[3]), wrapAmount))
-            self:proceed()
-        end
-
     end
 end
 

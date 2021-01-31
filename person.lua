@@ -98,16 +98,16 @@ function Person:ask(what)
     end
 
     self.beenSpokenTo = true
-    if what == "1" then
+    if what == 1 then
         return listPeople(self.known.graph1, "I came in with ", "I didn't come in with anybody.")
     end
 
-    if what == "2" then
+    if what == 2 then
         return listPeople(self.known.graph2, "I left with ", "I didn't see anybody.")
     end
 
-    if what == "3" then
-        return "im not saying shit"
+    if what == 3 then
+        return "I'm not answering that, sorry."
     end
     -- return self.known[what]
     return nil
