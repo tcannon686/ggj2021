@@ -14,7 +14,8 @@ GAME_HEIGHT = 576
 function love.load()
     love.graphics.setDefaultFilter("nearest")
 
-    love.graphics.setFont(love.graphics.newFont("assets/ProggyClean.ttf", 16))
+    MainFont = love.graphics.newFont("assets/ProggyClean.ttf", 16)
+    love.graphics.setFont(MainFont)
 
     -- global, so it can be accessed easily by textbox.lua
     GuiCanvas = love.graphics.newCanvas(GAME_WIDTH, GAME_HEIGHT)

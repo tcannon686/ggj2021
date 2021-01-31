@@ -5,12 +5,13 @@ local lume = require "lume"
 local CutToBlack = {}
 CutToBlack.__index = CutToBlack
 
-function CutToBlack:new(callback)
+function CutToBlack:new(text, callback)
     local self = setmetatable({}, CutToBlack)
     self.timer = 0.01
     self.done = false
     self.callback = callback
     self.doneCallback = false
+    self.text = text
     return self
 end
 
@@ -44,6 +45,9 @@ function CutToBlack:draw()
 
     lg.setColor(0,0,0, alpha)
     lg.rectangle("fill", 0,0, GAME_WIDTH, GAME_HEIGHT)
+
+    lg.setColor(1,1,1, alpha^3)
+    lg.print(self.text, -1*MainFont:getWidth(self.text) + GAME_WIDTH/2, GAME_HEIGHT/2 - 8, 0, 2)
 
     lg.setCanvas({prevCanvas, depth=true})
 

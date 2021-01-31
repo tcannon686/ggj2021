@@ -179,12 +179,19 @@ function Game:new(personCount)
         self.people[name] = Person:new(name, known)
     end
 
-    self:newDay()
+    self.firstFrame = true
+    self.timer = 300
 
     return self
 end
 
 function Game:update(dt)
+    if self.firstFrame then
+        self.firstFrame = false
+        self:newDay()
+        StateStack.peek().timer = 2
+    end
+
     -- only update the player if there is no active textbox
     self.player:update(dt, self)
 
@@ -228,7 +235,7 @@ function Game:newDay()
             self.player.position = {-1.5,1.5,0}
             g3d.camera.lookAt(-1.5, 1.5, 0, 0,1.5,0)
         end
-        StateStack.push(CutToBlackState:new(daySetup))
+        StateStack.push(CutToBlackState:new("Day " .. self.dayCount, daySetup))
     end
 end
 
