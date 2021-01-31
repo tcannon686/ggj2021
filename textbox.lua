@@ -4,50 +4,70 @@ local lg = love.graphics
 local Textbox = {}
 Textbox.__index = Textbox
 
-local q1 = {
-	"Who'd you come with?",
-	"Who were you here with?",
-	"And who might be accompanying you?",
-	"Who did you come here with?",
-	"When you entered, who did you see?",
-	"Was anyone near you when you entered?",
-	"Did you come with someone?",
-	"Who did you arrive here with?",
+local questionList = {
+	-- q1
+	{
+		"Who'd you come with?",
+		"Who were you here with?",
+		"And who might be accompanying you?",
+		"Who did you come here with?",
+		"When you entered, who did you see?",
+		"Was anyone near you when you entered?",
+		"Did you come with someone?",
+		"Who did you arrive here with?",
+	},
+	-- q2
+	{
+		"Who'd you leave with?",
+		"Who did you notice when you left?",
+		"And who was accompanying you on your way out?",
+		"Who did you leave here with?",
+		"When you exited, who did you see?",
+		"Was anyone near you when you left?",
+		"Did you leave with anyone?",
+		"Who did you leave here with?",
+	},
+	-- random
+	{
+		"Do you like burgers? Maybe even medium-rare?",
+		"What was the color of the last fish you saw?",
+		"Have you been watching that new HBO show?",
+		"What is your foot size?",
+		"Have you ever broken a bone?",
+		"What's your weight?",
+		"Have you ever killed someone in the past?",
+		"What did you study in college?",
+		"Do you have a good french recipe? I'm looking for one.",
+		"Have you ever won a game of Crowned Ultimate Magician?",
+		"Did you know that you can play Vector Prospector on Steam for only $12.99?",
+		"So, is it just me or does it kinda smell like laundry?",
+		"You also smell that burnt toast?",
+		"If you end up not being the killer, wanna grab a drink later? You seem chill.",
+		"If you were the killer, who would you kill next?",
+	},
 }
 
-local q2 = {
-	"Who'd you leave with?",
-	"Who did you notice when you left?",
-	"And who was accompanying you on your way out?",
-	"Who did you leave here with?",
-	"When you exited, who did you see?",
-	"Was anyone near you when you left?",
-	"Did you leave with anyone?",
-	"Who did you leave here with?",
-}
+math.randomseed(os.time())
 
-local q3 = {
-	"Do you like burgers? Maybe even medium-rare?",
-	"What was the color of the last fish you saw?",
-	"Have you been watching that new HBO show?",
-	"What is your foot size?",
-	"Have you ever broken a bone?",
-	"What's your weight?",
-	"Have you ever killed someone in the past?",
-	"What did you study in college?",
-	"Do you have a good french recipe? I'm looking for one.",
-	"Have you ever won a game of Crowned Ultimate Magician?",
-	"Did you know that you can play Vector Prospector on Steam for only $12.99?",
-	"So, is it just me or does it kinda smell like laundry?",
-	"You also smell that burnt toast?",
-	"If you end up not being the killer, wanna grab a drink later? You seem chill.",
-	"If you were the killer, who would you kill next?",
-}
 
-local choiceText = [[
-[1] Graph1 question?
-[2] Graph2 question?
-]]
+
+local questionOrder = {"1", "2", "3"}
+local function createChoiceText()
+	local choiceText = ""
+	questionOrder = lume.shuffle(questionOrder)
+	for i,v in pairs(questionOrder) do
+		choiceText = choiceText .. "[" .. i .. "] "
+		if v == "1" then
+			choiceText = choiceText .. questionList[1][math.random(#questionList[1])] .. "\n"
+		elseif v == "2" then
+			choiceText = choiceText .. questionList[2][math.random(#questionList[2])] .. "\n"
+		elseif v == "3" then
+			choiceText = choiceText .. questionList[3][math.random(#questionList[3])] .. "\n"
+		end
+	end
+
+	return choiceText
+end
 
 local wrapAmount = 64
 
@@ -69,6 +89,8 @@ function Textbox:new(text, personTalkingTo)
     -- so they can be reverted back to later
     self.personTalkingToScale = personTalkingTo.model.scale[2]
     self.personTalkingToTranslation = personTalkingTo.model.translation[2]
+
+    self.choiceText = createChoiceText()
 
     return self
 end
@@ -101,7 +123,7 @@ end
 function Textbox:getCurrentText()
     -- if in choice mode, don't do the typewriter effect
     if self:isInChoiceMode() then
-        return choiceText
+        return self.choiceText
     end
 
     return self.text[self.textIndex] and self.text[self.textIndex]:sub(0, math.floor(self.textScroll + 0.5))
@@ -168,12 +190,17 @@ function Textbox:keypressed(k)
 
     if self:isInChoiceMode() then
         if k == "1" then
-            table.insert(self.text, self.textIndex+1, lume.wordwrap(self.personTalkingTo:ask("1"), wrapAmount))
+            table.insert(self.text, self.textIndex+1, lume.wordwrap(self.personTalkingTo:ask(questionOrder[1]), wrapAmount))
             self:proceed()
         end
 
         if k == "2" then
-            table.insert(self.text, self.textIndex+1, lume.wordwrap(self.personTalkingTo:ask("2"), wrapAmount))
+            table.insert(self.text, self.textIndex+1, lume.wordwrap(self.personTalkingTo:ask(questionOrder[2]), wrapAmount))
+            self:proceed()
+        end
+
+        if k == "3" then
+            table.insert(self.text, self.textIndex+1, lume.wordwrap(self.personTalkingTo:ask(questionOrder[3]), wrapAmount))
             self:proceed()
         end
 

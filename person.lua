@@ -105,6 +105,10 @@ function Person:ask(what)
     if what == "2" then
         return listPeople(self.known.graph2, "I left with ", "I didn't see anybody.")
     end
+
+    if what == "3" then
+        return "im not saying shit"
+    end
     -- return self.known[what]
     return nil
 end
