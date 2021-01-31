@@ -15,15 +15,27 @@ function Person:new(name, known)
     self.known = known
 
     local position = {lume.random(-2,2), 1.6, lume.random(-2,2)}
-    local texture = lume.randomchoice({"assets/Dick.png"})
+    local texture
+    if name == "Crimson Reddington" then
+        texture = "assets/Crimson.png"
+    elseif name == "Aqua Bloomberg" then
+        texture = "assets/Aqua.png"
+    elseif name == "Lief Greenhand" then
+        texture = "assets/Lief.png"
+    elseif name == "Dick Goldmember" then
+        texture = "assets/Dick.png"
+    elseif name == "Bob Gray" then
+        texture = "assets/Bob.png"
+    elseif name == "Violet Purpov" then
+        texture = "assets/Violet.png"
+    elseif name == "Wilson White" then
+        texture = "assets/enemy.png"
+    else
+        textrue = "assets/enemy.png"
+    end
     self.model = g3d.newModel("assets/vertical_plane.obj", texture, position, {0,0,0}, {0.4,0.4,0.4})
 
-    -- keep for faster debugging
-    -- self.text = {
-    --     "I fucked ur mom",
-    --     "CHOICE",
-    -- }
-
+    -- 2nd argument is a boolean for debugging mode, just makes it quicker.
     self.dialogue = Dialogue:new(name, true)
     -- self.text = dialogue.text
 
@@ -52,10 +64,6 @@ function Person:ask(what)
     end
     -- return self.known[what]
     return nil
-end
-
-function Person:onAccused(props)
-    print(self.name .. ": I can't believe you would accuse me! >:(")
 end
 
 function Person:update(dt, game)
