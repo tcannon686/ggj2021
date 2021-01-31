@@ -22,6 +22,9 @@ function Dialogue:new(name, debugMode)
         self.uncooperative = {
             "I don't want to talk to you anymore.",
         }
+        self.uncooperative = {
+        	"Nah bith"
+        }
     elseif name == "Crimson Reddington" then
     	self.text = {
     		"Bold of you to approach me with such a humble cut, peasant.",
@@ -30,9 +33,22 @@ function Dialogue:new(name, debugMode)
         	"Now go, before I catch one of those plagues you people are so fond of.",
         	"Street rat.",
     	}
-        self.spokenToText = {}
-        self.caughtText = {}
-        self.accusedText = {}
+        self.spokenToText = {
+        	"You dare test the patience of your better?",
+        	"Go away before I give you a real job.",
+        	"We've already spoken, imbecile.",
+        }
+        self.caughtText = {
+        	"And I would've gotten away with it if it weren't for that blasted detective!!"
+        }
+        self.accusedText = {
+        	"You dare accuse a man of stature such as myself?! Wrong, fool."
+        }
+        self.uncooperative = {
+        	"Hmph. I suppose the common rabble wouldn't recognize a gentleman of class and dignity such as myself. Go away.",
+        	"Jest elsewhere.",
+        	"I should have your neck for your petty insolence."
+        }
     elseif name == "Aqua Bloomberg" then
     	self.text = {
     		"Ah, hello detective.",
@@ -41,9 +57,22 @@ function Dialogue:new(name, debugMode)
         	"I do hope this information proves useful, detective.",
         	"Au revoir.",
     	}
-        self.spokenToText = {}
-        self.caughtText = {}
-        self.accusedText = {}
+        self.spokenToText = {
+        	"Oh dear, feeling a little case of memory loss?",
+        	"I've told you all I can.",
+        	"What else can I say?",
+        }
+        self.caughtText = {
+        	"You got me, I suppose. I give."
+        }
+        self.accusedText = {
+        	"I'm appalled you would think so lowly of me. I didn't do it."
+        }
+        self.uncooperative = {
+        	"Don't expect any favors from me dear.",
+        	"I'm quite upset with you.",
+        	"...",
+        }
     elseif name == "Lief Greenhand" then
     	self.text = {
     		"Hi! I'm Lief! Let me know if I can help!",
@@ -52,33 +81,72 @@ function Dialogue:new(name, debugMode)
         	"Oh! I get it! You're doing detective stuff with these clues, aren't you!",
         	"Wait, did someone take my biscuit?",
     	}
-        self.spokenToText = {}
-        self.caughtText = {}
-        self.accusedText = {}
+        self.spokenToText = {
+        	"Dummy! You already asked me something!",
+        	"You must not remember our conversation. That saddens me.",
+        	"We already talked! Ask one of the others something.",
+        }
+        self.caughtText = {
+        	"Hehe!!! UwU o3o Looks like u caught me xDDD MURDERMURDERMURDER"
+        }
+        self.accusedText = {
+        	"Waah! You thought I killed them? I hate you!!!"
+        }
+        self.uncooperative = {
+        	"I'm sooo done talking to you.",
+        	"Leave! I don't wanna talk to you!",
+        	"So rude, man. Just cold.",
+        }
     elseif name == "Dick Goldmember" then
     	self.text = {
-    		"Listen here, bumpkin.",
-    		"Now, ya might think yer cool just cuz you're some kinda badass harbinger of justice, but yer nothing compared to me!",
-    		"Oh, and stay away from the ladies tonight, will ya?",
+    		"Like, listen here, bumpkin.",
+    		"Now, ya might think yer, like, cool just cuz you're, like, some kinda badass harbinger of justice, but yer nothing compared to me!",
+    		"Like, stay away from the ladies tonight, will ya man?",
         	"CHOICE",
         	"It's not like I want to aid in your investigation or anything.",
     	}
-        self.spokenToText = {}
-        self.caughtText = {}
-        self.accusedText = {}
+        self.spokenToText = {
+        	"Like, you ardy were here.",
+        	"Bro, you already asked me something.",
+        	"Go ask Bob something. I told you all I know."
+        }
+        self.caughtText = {
+        	"Ok, ok, I did it bro. But only because it was totally a chad thing to do."
+        }
+        self.accusedText = {
+        	"Hey man, I'm chillin. I didn't kill anything."
+        }
+        self.uncooperative = {
+        	"Dude, we are not chill anymore.",
+        	"Go away, man. We aren't homies.",
+        	"You ruined my vibe man. My vibe! Bounce.",
+        }
     elseif name == "Bob Gray" then
     	self.text = {
     		"Hmm. Hey.",
     		"I'm Bob.",
-    		"Don't call me Bob though.",
+    		"Don't call me Bob.",
     		"So, what do you want?",
         	"CHOICE",
         	"Move along, now.",
         	"Can't you see I'm busy?",
     	}
-        self.spokenToText = {}
-        self.caughtText = {}
-        self.accusedText = {}
+        self.spokenToText = {
+        	"What?",
+        	"You've been here.",
+        	"Solved it yet?",
+        }
+        self.caughtText = {
+        	"Yup. It was me."
+        }
+        self.accusedText = {
+        	"Nope."
+        }
+        self.uncooperative = {
+        	"I'm disappointed in you.",
+        	"Maybe next game.",
+        	"Vacate my space."
+        }
     elseif name == "Violet Purpov" then
     	self.text = {
     		"Hey there, cutie.",
@@ -87,21 +155,47 @@ function Dialogue:new(name, debugMode)
         	"I see you're a man that sticks to his job.",
         	"Come back if you want to sneak out to the garden.",
     	}
-        self.spokenToText = {}
-        self.caughtText = {}
-        self.accusedText = {}
+        self.spokenToText = {
+        	"I'm glad you're back, but I really don't know anything else.",
+        	"I told you what I know, hun.",
+        	"Maybe ask someone else?",
+        }
+        self.caughtText = {
+        	"Gaah! How did you know it was me! I even tried the time-old method of seduction!"
+        }
+        self.accusedText = {
+        	"*Sniff* How could you be so cruel? Of course it wasn't me!"
+        }
+        self.uncooperative = {
+        	"You're rude. Leave me alone.",
+        	"And here I thought detectives were gentlemen. Go somewhere else.",
+        	"Arrest me if you want. I'm not talking to you, pig."
+        }
     elseif name == "Wilson White" then
     	self.text = {
     		"Uh, hey, uh, hehe...",
     		"What brings you over here, detective?",
-    		"N-not that I have a problem with that...",
+    		"N-nothing wrong here...",
         	"CHOICE",
         	"That's all I know! I swear!",
         	"*Incoherent murmuring*",
     	}
-        self.spokenToText = {}
-        self.caughtText = {}
-        self.accusedText = {}
+        self.spokenToText = {
+        	"Eep! That's all I know, I swear!",
+        	"Please no bad cop! I have a fragile appendix.",
+        	"*Gulp* I told you what you wanted to know, right?",
+        }
+        self.caughtText = {
+        	"HAH! Looks like my reverse psychology based on murder mystery stereotypes has failed! You got me."
+        }
+        self.accusedText = {
+        	"It wasn't me! I swear it! I'm not your guy!"
+        }
+        self.uncooperative = {
+        	"I want a lawyer!",
+        	"Hey, wait, you never had solid evidence! Are you really a detective?",
+        	"My feelings are still hurt after what you said about me.",
+        }
     end
 
     return self
