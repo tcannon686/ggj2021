@@ -5,9 +5,8 @@ local Textbox = {}
 Textbox.__index = Textbox
 
 local choiceText = [[
-[1] Who did you see?
-[2] What weapon did you see?
-[3] Where did you see them?
+[1] Graph1 question?
+[2] Graph2 question?
 ]]
 
 function Textbox:new(text, personTalkingTo)
@@ -137,10 +136,6 @@ function Textbox:keypressed(k)
             self:proceed()
         end
 
-        if k == "3" then
-            table.insert(self.text, self.textIndex+1, self.personTalkingTo:ask("location"))
-            self:proceed()
-        end
     end
 end
 

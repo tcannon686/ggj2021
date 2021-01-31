@@ -19,12 +19,12 @@ function Person:new(name, known)
     self.model = g3d.newModel("assets/vertical_plane.obj", texture, position, {0,0,0}, {0.4,0.4,0.4})
 
     -- keep for faster debugging
-    self.text = {
-        "I fucked ur mom",
-        "CHOICE",
-    }
+    -- self.text = {
+    --     "I fucked ur mom",
+    --     "CHOICE",
+    -- }
 
-    -- local dialogue = Dialogue:new(name)
+    self.dialogue = Dialogue:new(name, true)
     -- self.text = dialogue.text
 
     self.speaking = false
@@ -66,10 +66,16 @@ function Person:update(dt, game)
         -- player has now initiated a conversation with this person
         self.inSpeakingRange = true
         if self.speaking and not game.textbox then
-            if not self.beenSpokenTo then
-                game.textbox = Textbox:new(self.text, self)
+            if self.accused then
+                if self.name == game.murderer then
+                    game.textbox = Textbox:new(self.dialogue.caughtText, self)
+                else
+                    game.textbox = Textbox:new(self.dialogue.accusedText, self)
+                end
+            elseif not self.beenSpokenTo then
+                game.textbox = Textbox:new(self.dialogue.text, self)
             else
-                game.textbox = Textbox:new({"Fuck off cunt"}, self)
+                game.textbox = Textbox:new(self.dialogue.spokenToText, self)
             end
         end
     else
@@ -87,6 +93,9 @@ end
 function Person:mousepressed(k)
     if self.inSpeakingRange and k == 1 then
         self.speaking = true
+    elseif self.inSpeakingRange and k == 2 then
+        self.speaking = true
+        self.accused = true
     end
 end
 
