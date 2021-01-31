@@ -128,7 +128,7 @@ local function makeRandomSus(people, graphList, murderer)
             connectionSize = tableLength(graph[name])
             if connectionSize == 0 then
                 print(name .. " is socially akward")
-                connection = math.random(#people)
+                connection = people[math.random(#people)]
                 graph[name][connection] = connection
             end
         end
@@ -153,11 +153,11 @@ function Game:new(personCount)
     self.murderer = people[math.random(#people)]
     local graphList = makeGraphList(2)
 
-    --print("MURDERER: " .. self.murderer)
+    print("MURDERER: " .. self.murderer)
 
     makeMurderer(graphList, self.murderer)
     makeRandomSus(people, graphList, self.murderer)
-    --printGraph(graphList)
+    printGraph(graphList)
 
     self.map = g3d.newModel("assets/house1.obj", "assets/castle.png", {0,2,0}, nil, {-1,-1,1})
     self.player = Player:new(-1.5,1.5,0, self.map)
@@ -167,7 +167,7 @@ function Game:new(personCount)
     self.people = {}
 
     self.dayCount = 0
-    
+
     self.magnifyingGlass = lg.newImage("assets/magnifying_glass.png")
 
     -- create all the people
@@ -182,7 +182,7 @@ function Game:new(personCount)
     end
 
     self.firstFrame = true
-    self.timer = 300
+    self.timer = 0
 
     return self
 end
@@ -201,7 +201,7 @@ function Game:update(dt)
         person:update(dt, self)
     end
 
-    self.timer = self.timer - dt
+    self.timer = self.timer + dt
 
     if self.textbox then self.textbox:update(dt, self) end
 
@@ -226,7 +226,6 @@ function Game:newDay()
         person.beenSpokenTo = false
     end
 
-    self.timer = 300
     self.dayCount = self.dayCount + 1
 
     if self.dayCount == 4 then
@@ -296,7 +295,7 @@ function Game:draw()
         seconds = "0" .. seconds
     end
     lg.print("Day " .. self.dayCount, 0, 0, 0, 2)
-    lg.print("Time left: " .. minutes ..":" .. seconds, 0, 24, 0, 2)
+    lg.print("Time: " .. minutes ..":" .. seconds, 0, 24, 0, 2)
 
     lg.setCanvas({prevCanvas, depth=true})
     --------------------------------------
