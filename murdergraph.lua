@@ -59,8 +59,8 @@ local function makeGraph(name)
 end
 
 local function printGraph(graphList)
-    for _,graph in pairs(graphList) do
-        print("--------------------")
+    for i,graph in pairs(graphList) do
+        print("----Graph no.".. i .. "------")
         for name,connectionList in pairs(graph) do
             local str = name .. ": "
             for _,connection in pairs(connectionList) do
