@@ -4,6 +4,9 @@ local g3d = require "g3d"
 local Person = require "person"
 local Player = require "player"
 local lume = require "lume"
+local StateStack = require "statestack"
+local CutToBlackState = require "states/cut_to_black"
+local LoseState = require "states/lose"
 
 people = {
     "Crimson Reddington",
@@ -149,20 +152,18 @@ function Game:new(personCount)
     self.murderer = people[math.random(#people)]
     local graphList = makeGraphList(2)
 
-    print("MURDERER: " .. self.murderer)
+    --print("MURDERER: " .. self.murderer)
 
     makeMurderer(graphList, self.murderer)
     makeRandomSus(people, graphList, self.murderer)
-    printGraph(graphList)
+    --printGraph(graphList)
 
     self.map = g3d.newModel("assets/house1.obj", "assets/castle.png", {0,2,0}, nil, {-1,-1,1})
-    --self.background = g3d.newModel("assets/sphere.obj", "assets/starfield.png", {0,0,0}, nil, {500,500,500})
     self.player = Player:new(0,0,0, self.map)
-
     self.textbox = nil
-    self.timer = 10
-
     self.people = {}
+
+    self.dayCount = 0
 
     -- create all the people
     for _,name in pairs(people) do
@@ -174,6 +175,8 @@ function Game:new(personCount)
 
         self.people[name] = Person:new(name, known)
     end
+
+    self:newDay()
 
     return self
 end
@@ -189,6 +192,11 @@ function Game:update(dt)
     self.timer = self.timer - dt
 
     if self.textbox then self.textbox:update(dt, self) end
+
+    if self.transitionNextDay and not self.textbox then
+        self.transitionNextDay = false
+        self:newDay()
+    end
 end
 
 function Game:mousemoved(x,y, dx,dy)
@@ -197,9 +205,61 @@ function Game:mousemoved(x,y, dx,dy)
     end
 end
 
+function Game:newDay()
+    for name, person in pairs(self.people) do
+        person.beenSpokenTo = false
+    end
+
+    self.timer = 300
+    self.dayCount = self.dayCount + 1
+
+    if self.dayCount == 4 then
+        -- if you used all 3 days, you lose
+        StateStack.push(LoseState:new())
+    else
+        local function daySetup()
+            self.player.position = {-1.5,1.5,0}
+            g3d.camera.lookAt(-1.5, 1.5, 0, 0,1.5,0)
+        end
+        StateStack.push(CutToBlackState:new(daySetup))
+    end
+end
+
+function Game:queueNextDay()
+    self.transitionNextDay = true
+end
+
+function Game:setAccuseMode()
+    self.accuseMode = true
+
+    local function accuseSetup()
+        -- store the previous positions of the people
+        -- so they can be returned there afterwards
+        local peoplePositions = {}
+        for name,person in pairs(self.people) do
+            peoplePositions[name] = {person.model.translation[1], person.model.translation[2], person.model.translation[3]}
+        end
+
+        self.player.position[1] = 6.5
+        self.player.position[2] = 1.5
+        self.player.position[3] = 0
+
+        -- arrange the people in a circle
+        local angle = 0
+        local radius = 1.25
+        for name,person in pairs(self.people) do
+            person.model.translation[1] = math.cos(angle)*radius + self.player.position[1]
+            person.model.translation[3] = math.sin(angle)*radius + self.player.position[3]
+            angle = angle + math.pi*2/#people
+        end
+    end
+
+    if StateStack.peek() == self then
+        StateStack.push(CutToBlackState:new(accuseSetup))
+    end
+end
+
 function Game:draw()
-    --self.player:draw()
-    --self.background:draw()
     self.map:draw()
 
     for _, person in pairs(self.people) do
@@ -215,7 +275,8 @@ function Game:draw()
     if seconds < 10 then
         seconds = "0" .. seconds
     end
-    lg.print("Time left: " .. minutes ..":" .. seconds, 0, 0, 0, 2)
+    lg.print("Day " .. self.dayCount, 0, 0, 0, 2)
+    lg.print("Time left: " .. minutes ..":" .. seconds, 0, 24, 0, 2)
 
     lg.setCanvas({prevCanvas, depth=true})
     --------------------------------------
@@ -228,12 +289,17 @@ function Game:keypressed(k)
     if self.textbox and self.textbox.keypressed then
         self.textbox:keypressed(k)
     end
+
+    --if k == "r" then
+        --self:setAccuseMode()
+    --end
 end
 
 function Game:mousepressed(k)
     for _, person in pairs(self.people) do
         person:mousepressed(k)
     end
+
     if self.textbox and self.textbox.mousepressed then
         self.textbox:mousepressed(k)
     end

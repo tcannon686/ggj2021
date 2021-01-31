@@ -42,6 +42,7 @@ function Person:new(name, known)
     self.speaking = false
     self.inSpeakingRange = false
     self.beenSpokenTo = false
+    self.hasBeenAccused = false
 
     return self
 end
@@ -79,11 +80,21 @@ function Person:update(dt, game)
                     game.textbox = Textbox:new(self.dialogue.caughtText, self)
                 else
                     game.textbox = Textbox:new(self.dialogue.accusedText, self)
+                    self.hasBeenAccused = true
                 end
-            elseif not self.beenSpokenTo then
-                game.textbox = Textbox:new(self.dialogue.text, self)
+                self.accused = false
+
+                game:queueNextDay()
             else
-                game.textbox = Textbox:new(self.dialogue.spokenToText, self)
+                if self.hasBeenAccused then
+                    game.textbox = Textbox:new(self.dialogue.uncooperative, self)
+                else
+                    if not self.beenSpokenTo then
+                        game.textbox = Textbox:new(self.dialogue.text, self)
+                    else
+                        game.textbox = Textbox:new(self.dialogue.spokenToText, self)
+                    end
+                end
             end
         end
     else
