@@ -1,18 +1,9 @@
 -- imports
+local lg = love.graphics
 local g3d = require "g3d"
 local Person = require "person"
 local Player = require "player"
 local lume = require "lume"
-
--- people = {
---     "red",
---     "blue",
---     "green",
---     "yellow",
---     "blue",
---     "purple",
---     "white"
--- }
 
 people = {
     "Crimson Reddington",
@@ -169,6 +160,7 @@ function Game:new(personCount)
     self.player = Player:new(0,0,0, self.map)
 
     self.textbox = nil
+    self.timer = 300
 
     self.people = {}
 
@@ -194,6 +186,8 @@ function Game:update(dt)
         person:update(dt, self)
     end
 
+    self.timer = self.timer - dt
+
     if self.textbox then self.textbox:update(dt, self) end
 end
 
@@ -212,22 +206,18 @@ function Game:draw()
         person:draw(self)
     end
 
+    -------------2D drawing--------------
+    local prevCanvas = lg.getCanvas()
+    lg.setCanvas(GuiCanvas)
+    
+    local currTime = math.floor(self.timer)
+    lg.print("Time left: " .. math.floor(currTime/60) ..":" .. currTime % 60, 0, 0, 0, 2)
+
+    lg.setCanvas({prevCanvas, depth=true})
+    --------------------------------------
+
+
     if self.textbox then self.textbox:draw(self) end
-end
-
-function Game:accuse(person, weapon, place)
-    if self.truth.person == person and self.truth.location == location and self.truth.weapon == weapon then
-        print(person .. ": Argh! You got me!")
-        return true
-    end
-
-    self.people[person]:onAccused()
-
-    return false
-end
-
-function Game:ask(person, what)
-    return self.people[person]:ask(what)
 end
 
 function Game:keypressed(k)

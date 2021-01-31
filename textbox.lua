@@ -78,7 +78,6 @@ function Textbox:draw(game)
     -- we have to render gui elements to GuiCanvas for reasons
     local prevCanvas = lg.getCanvas()
     lg.setCanvas(GuiCanvas)
-    lg.clear(0,0,0,0)
 
     -- draw the black textbox
     lg.setColor(0,0,0,0.75)
