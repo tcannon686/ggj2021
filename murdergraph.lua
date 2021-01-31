@@ -122,9 +122,6 @@ local murderer = people[math.random(#people)]
 local blueGraph, blueConnectionCount = makeGraph()
 local redGraph, redConnectionCount = makeGraph()
 
--- printGraph(blueGraph)
--- print("-----")
--- printGraph(redGraph)
 print("MURDERER: " .. murderer)
 
 makeSus(blueGraph, murderer)

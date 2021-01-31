@@ -128,12 +128,12 @@ function Textbox:keypressed(k)
 
     if self:isInChoiceMode() then
         if k == "1" then
-            table.insert(self.text, self.textIndex+1, self.personTalkingTo:ask("person"))
+            table.insert(self.text, self.textIndex+1, self.personTalkingTo:ask("1"))
             self:proceed()
         end
 
         if k == "2" then
-            table.insert(self.text, self.textIndex+1, self.personTalkingTo:ask("weapon"))
+            table.insert(self.text, self.textIndex+1, self.personTalkingTo:ask("2"))
             self:proceed()
         end
 

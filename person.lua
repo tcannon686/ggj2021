@@ -17,10 +17,10 @@ function Person:new(name, known)
     local texture = lume.randomchoice({"assets/person1.png", "assets/person2.png"})
     self.model = g3d.newModel("assets/vertical_plane.obj", texture, position, {0,0,0}, {0.4,0.4,0.4})
     self.text = {
-        "this is a super long piece of text oh god i hope it word wraps around the textbox correctly oh jeez oh fuck oh shit",
+        "making this short cus I'm impatient",
         "CHOICE",
-        "i had sexual intercourse with your mother last night",
-        "joey didnt get added to the repo lol",
+        -- "i had sexual intercourse with your mother last night",
+        -- "joey didnt get added to the repo lol",
     }
     self.speaking = false
     self.inSpeakingRange = false
@@ -29,7 +29,21 @@ function Person:new(name, known)
 end
 
 function Person:ask(what)
-    return self.known[what]
+    if what == "1" then
+        local str = "I was with "
+        for _,i in pairs(self.known.graph1) do
+            str = str .. i .. ","
+        end
+        return str
+    elseif what == "2" then
+        local str = "I saw "
+        for _,i in pairs(self.known.graph2) do
+            str = str .. i .. ","
+        end
+        return str
+    end
+    -- return self.known[what]
+    return nil
 end
 
 function Person:onAccused(props)
