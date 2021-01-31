@@ -57,7 +57,7 @@ function Person:new(name, known)
     self.model = g3d.newModel("assets/vertical_plane.obj", texture, position, {0,0,0}, {0.4,0.4,0.4})
 
     -- 2nd argument is a boolean for debugging mode, just makes it quicker.
-    self.dialogue = Dialogue:new(name, true)
+    self.dialogue = Dialogue:new(name, false)
     -- self.text = dialogue.text
 
     self.speaking = false

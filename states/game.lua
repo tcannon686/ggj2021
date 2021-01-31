@@ -167,6 +167,8 @@ function Game:new(personCount)
     self.people = {}
 
     self.dayCount = 0
+    
+    self.magnifyingGlass = lg.newImage("assets/magnifying_glass.png")
 
     -- create all the people
     for _,name in pairs(people) do
