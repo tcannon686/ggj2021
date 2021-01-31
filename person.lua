@@ -8,7 +8,7 @@ local Dialogue = require "dialogue"
 local Person = {}
 Person.__index = Person
 
-function Person:new(name, known)
+function Person:new(name, known, position)
     local self = setmetatable({}, Person)
 
     self.name = name
@@ -20,8 +20,6 @@ function Person:new(name, known)
     local femaleSound1 = love.audio.newSource("sfx/female1.mp3", "static")
     local femaleSound2 = love.audio.newSource("sfx/female2.mp3", "static")
 
-    
-    local position = {lume.random(-2,2), 1.6, lume.random(-2,2)}
     local texture, pitch
     if name == "Crimson Reddington" then
         texture = "assets/Crimson.png"
@@ -69,20 +67,43 @@ function Person:new(name, known)
 end
 
 function Person:ask(what)
+    local function listPeople(graph, intro, none)
+        local count = 0
+        for i,name in pairs(graph) do
+            count = count + 1
+        end
+
+        local str = none
+        if count > 0 then
+            str = intro
+
+            local iter = 1
+            for _,name in pairs(graph) do
+                str = str .. name
+
+                if iter < count then
+                    if iter == count - 1 then
+                        str = str .. ", and "
+                    else
+                        str = str .. ", "
+                    end
+                else
+                    str = str .. "."
+                end
+                iter = iter + 1
+            end
+        end
+
+        return str
+    end
+
+    self.beenSpokenTo = true
     if what == "1" then
-        local str = "I was with "
-        for _,i in pairs(self.known.graph1) do
-            str = str .. i .. ","
-        end
-        self.beenSpokenTo = true
-        return str
-    elseif what == "2" then
-        local str = "I saw "
-        for _,i in pairs(self.known.graph2) do
-            str = str .. i .. ","
-        end
-        self.beenSpokenTo = true
-        return str
+        return listPeople(self.known.graph1, "I came in with ", "I didn't come in with anybody.")
+    end
+
+    if what == "2" then
+        return listPeople(self.known.graph2, "I left with ", "I didn't see anybody.")
     end
     -- return self.known[what]
     return nil
@@ -115,12 +136,17 @@ function Person:update(dt, game)
                 self.accused = false
             else
                 if self.hasBeenAccused then
-                    game.textbox = Textbox:new(self.dialogue.uncooperative, self)
+                    game.textbox = Textbox:new({lume.randomchoice(self.dialogue.uncooperative)}, self)
                 else
                     if not self.beenSpokenTo then
-                        game.textbox = Textbox:new(self.dialogue.text, self)
+                        local text = {
+                            lume.randomchoice(self.dialogue.text[1]),
+                            "CHOICE",
+                            lume.randomchoice(self.dialogue.text[2]),
+                        }
+                        game.textbox = Textbox:new(text, self)
                     else
-                        game.textbox = Textbox:new(self.dialogue.spokenToText, self)
+                        game.textbox = Textbox:new({lume.randomchoice(self.dialogue.spokenToText)}, self)
                     end
                 end
             end

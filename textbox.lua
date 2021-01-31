@@ -4,10 +4,52 @@ local lg = love.graphics
 local Textbox = {}
 Textbox.__index = Textbox
 
+local q1 = {
+	"Who'd you come with?",
+	"Who were you here with?",
+	"And who might be accompanying you?",
+	"Who did you come here with?",
+	"When you entered, who did you see?",
+	"Was anyone near you when you entered?",
+	"Did you come with someone?",
+	"Who did you arrive here with?",
+}
+
+local q2 = {
+	"Who'd you leave with?",
+	"Who did you notice when you left?",
+	"And who was accompanying you on your way out?",
+	"Who did you leave here with?",
+	"When you exited, who did you see?",
+	"Was anyone near you when you left?",
+	"Did you leave with anyone?",
+	"Who did you leave here with?",
+}
+
+local q3 = {
+	"Do you like burgers? Maybe even medium-rare?",
+	"What was the color of the last fish you saw?",
+	"Have you been watching that new HBO show?",
+	"What is your foot size?",
+	"Have you ever broken a bone?",
+	"What's your weight?",
+	"Have you ever killed someone in the past?",
+	"What did you study in college?",
+	"Do you have a good french recipe? I'm looking for one.",
+	"Have you ever won a game of Crowned Ultimate Magician?",
+	"Did you know that you can play Vector Prospector on Steam for only $12.99?",
+	"So, is it just me or does it kinda smell like laundry?",
+	"You also smell that burnt toast?",
+	"If you end up not being the killer, wanna grab a drink later? You seem chill.",
+	"If you were the killer, who would you kill next?",
+}
+
 local choiceText = [[
 [1] Graph1 question?
 [2] Graph2 question?
 ]]
+
+local wrapAmount = 64
 
 function Textbox:new(text, personTalkingTo)
     local self = setmetatable({}, Textbox)
@@ -15,7 +57,7 @@ function Textbox:new(text, personTalkingTo)
     -- preprocess the text to be nicely word wrapped
     self.text = {}
     for i, boxtext in ipairs(text) do
-        self.text[i] = lume.wordwrap(boxtext, 64)
+        self.text[i] = lume.wordwrap(boxtext, wrapAmount)
     end
 
     self.textIndex = 1
@@ -126,12 +168,12 @@ function Textbox:keypressed(k)
 
     if self:isInChoiceMode() then
         if k == "1" then
-            table.insert(self.text, self.textIndex+1, self.personTalkingTo:ask("1"))
+            table.insert(self.text, self.textIndex+1, lume.wordwrap(self.personTalkingTo:ask("1"), wrapAmount))
             self:proceed()
         end
 
         if k == "2" then
-            table.insert(self.text, self.textIndex+1, self.personTalkingTo:ask("2"))
+            table.insert(self.text, self.textIndex+1, lume.wordwrap(self.personTalkingTo:ask("2"), wrapAmount))
             self:proceed()
         end
 

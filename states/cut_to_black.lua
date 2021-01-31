@@ -19,7 +19,6 @@ function CutToBlack:update(dt)
     self.timer = self.timer + dt
 
     if self.done then
-        print("self done")
         StateStack.pop()
     end
 end

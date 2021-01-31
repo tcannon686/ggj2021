@@ -122,13 +122,13 @@ local function makeRandomSus(people, graphList, murderer)
         if name ~= murderer and math.random(0, 1) == 1 then -- sus coinFlip
             graphIndex = math.random(#graphList)
             graph = graphList[graphIndex]
-            print(name .. " is sus on graph no. " .. graphIndex)
+            --print(name .. " is sus on graph no. " .. graphIndex)
             makeSus(graph, name)
 
             connectionSize = tableLength(graph[name])
             if connectionSize == 0 then
-                print(name .. " is socially akward")
-                connection = math.random(#people)
+                -- print(name .. " is socially akward")
+                connection = people[math.random(#people)]
                 graph[name][connection] = connection
             end
         end
@@ -153,11 +153,11 @@ function Game:new(personCount)
     self.murderer = people[math.random(#people)]
     local graphList = makeGraphList(2)
 
-    --print("MURDERER: " .. self.murderer)
+    print("MURDERER: " .. self.murderer)
 
     makeMurderer(graphList, self.murderer)
     makeRandomSus(people, graphList, self.murderer)
-    --printGraph(graphList)
+    printGraph(graphList)
 
     self.map = g3d.newModel("assets/house1.obj", "assets/castle.png", {0,2,0}, nil, {-1,-1,1})
     self.player = Player:new(-1.5,1.5,0, self.map)
@@ -167,8 +167,20 @@ function Game:new(personCount)
     self.people = {}
 
     self.dayCount = 0
-    
+
     self.magnifyingGlass = lg.newImage("assets/magnifying_glass.png")
+
+    local locations = {
+        {2.5, 1.6, 2},
+        {2.25, 1.6, 5.8},
+        {-0.8, 1.6, -2.4},
+        {-0.75, 1.6, -5},
+        {2.65, 1.6, -7},
+        {7.4, 1.6, 0.71},
+        {6, 1.6, -1},
+        {-0.15, 1.6, 10.5},
+        {-0.62, 1.6, 3},
+    }
 
     -- create all the people
     for _,name in pairs(people) do
@@ -178,11 +190,13 @@ function Game:new(personCount)
             graph2 = graphList[2][name]
         }
 
-        self.people[name] = Person:new(name, known)
+        local position = table.remove(locations, math.random(#locations))
+
+        self.people[name] = Person:new(name, known, position)
     end
 
     self.firstFrame = true
-    self.timer = 300
+    self.timer = 0
 
     return self
 end
@@ -201,7 +215,7 @@ function Game:update(dt)
         person:update(dt, self)
     end
 
-    self.timer = self.timer - dt
+    self.timer = self.timer + dt
 
     if self.textbox then self.textbox:update(dt, self) end
 
@@ -226,7 +240,6 @@ function Game:newDay()
         person.beenSpokenTo = false
     end
 
-    self.timer = 300
     self.dayCount = self.dayCount + 1
 
     if self.dayCount == 4 then
@@ -289,14 +302,14 @@ function Game:draw()
     -------------2D drawing--------------
     local prevCanvas = lg.getCanvas()
     lg.setCanvas(GuiCanvas)
-    
+
     local minutes = math.floor(math.floor(self.timer) / 60)
     local seconds = math.floor(self.timer) % 60
     if seconds < 10 then
         seconds = "0" .. seconds
     end
     lg.print("Day " .. self.dayCount, 0, 0, 0, 2)
-    lg.print("Time left: " .. minutes ..":" .. seconds, 0, 24, 0, 2)
+    lg.print("Time: " .. minutes ..":" .. seconds, 0, 24, 0, 2)
 
     lg.setCanvas({prevCanvas, depth=true})
     --------------------------------------
