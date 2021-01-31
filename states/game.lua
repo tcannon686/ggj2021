@@ -7,6 +7,7 @@ local lume = require "lume"
 local StateStack = require "statestack"
 local CutToBlackState = require "states/cut_to_black"
 local LoseState = require "states/lose"
+local WinState = require "states/win"
 
 people = {
     "Crimson Reddington",
@@ -193,9 +194,13 @@ function Game:update(dt)
 
     if self.textbox then self.textbox:update(dt, self) end
 
-    if self.transitionNextDay and not self.textbox then
-        self.transitionNextDay = false
+    if self.queuedNextDay and not self.textbox then
+        self.queuedNextDay = false
         self:newDay()
+    end
+
+    if self.queuedWin and not self.textbox then
+        StateStack.push(WinState:new())
     end
 end
 
@@ -226,7 +231,11 @@ function Game:newDay()
 end
 
 function Game:queueNextDay()
-    self.transitionNextDay = true
+    self.queuedNextDay = true
+end
+
+function Game:queueWin()
+    self.queuedWin = true
 end
 
 function Game:setAccuseMode()

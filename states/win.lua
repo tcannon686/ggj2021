@@ -14,10 +14,11 @@ function Lose:draw()
 
     lg.setColor(1,1,1)
     lg.push()
-    lg.print("You lose!", 400,250, 0, 2)
+    lg.print("You win!", 400,250, 0, 2)
     lg.pop()
 
     lg.setCanvas({prevCanvas, depth=true})
 end
 
 return Lose
+
