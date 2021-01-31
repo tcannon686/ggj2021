@@ -69,20 +69,43 @@ function Person:new(name, known)
 end
 
 function Person:ask(what)
+    local function listPeople(graph, intro, none)
+        local count = 0
+        for i,name in pairs(graph) do
+            count = count + 1
+        end
+
+        local str = none
+        if count > 0 then
+            str = intro
+
+            local iter = 1
+            for _,name in pairs(graph) do
+                str = str .. name
+
+                if iter < count then
+                    if iter == count - 1 then
+                        str = str .. ", and "
+                    else
+                        str = str .. ", "
+                    end
+                else
+                    str = str .. "."
+                end
+                iter = iter + 1
+            end
+        end
+
+        return str
+    end
+
+    self.beenSpokenTo = true
     if what == "1" then
-        local str = "I was with "
-        for _,i in pairs(self.known.graph1) do
-            str = str .. i .. ","
-        end
-        self.beenSpokenTo = true
-        return str
-    elseif what == "2" then
-        local str = "I saw "
-        for _,i in pairs(self.known.graph2) do
-            str = str .. i .. ","
-        end
-        self.beenSpokenTo = true
-        return str
+        return listPeople(self.known.graph1, "I came in with ", "I didn't come in with anybody.")
+    end
+
+    if what == "2" then
+        return listPeople(self.known.graph2, "I left with ", "I didn't see anybody.")
     end
     -- return self.known[what]
     return nil

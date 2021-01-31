@@ -122,12 +122,12 @@ local function makeRandomSus(people, graphList, murderer)
         if name ~= murderer and math.random(0, 1) == 1 then -- sus coinFlip
             graphIndex = math.random(#graphList)
             graph = graphList[graphIndex]
-            print(name .. " is sus on graph no. " .. graphIndex)
+            --print(name .. " is sus on graph no. " .. graphIndex)
             makeSus(graph, name)
 
             connectionSize = tableLength(graph[name])
             if connectionSize == 0 then
-                print(name .. " is socially akward")
+                -- print(name .. " is socially akward")
                 connection = people[math.random(#people)]
                 graph[name][connection] = connection
             end
@@ -288,7 +288,7 @@ function Game:draw()
     -------------2D drawing--------------
     local prevCanvas = lg.getCanvas()
     lg.setCanvas(GuiCanvas)
-    
+
     local minutes = math.floor(math.floor(self.timer) / 60)
     local seconds = math.floor(self.timer) % 60
     if seconds < 10 then

@@ -67,11 +67,14 @@ function Dialogue:new(name, debugMode)
         }
     elseif name == "Crimson Reddington" then
     	self.text = {
-    		"Bold of you to approach me with such a humble cut, peasant.",
-    		"I do hope you do your job quickly so I can get back to my tea and feminine company",
-        	"CHOICE",
-        	"Now go, before I catch one of those plagues you people are so fond of.",
-        	"Street rat.",
+    		{
+	        	"Bold of you to approach me with such a humble cut, peasant.",
+	            "I do hope you do your job quickly so I can get back to my tea and feminine company",
+	        },
+	        {
+	            "Now go, before I catch one of those plagues you people are so fond of.",
+	            "Street rat.",
+	        }
     	}
         self.spokenToText = {
         	"You dare test the patience of your better?",
@@ -91,11 +94,14 @@ function Dialogue:new(name, debugMode)
         }
     elseif name == "Aqua Bloomberg" then
     	self.text = {
-    		"Ah, hello detective.",
-    		"The innocent die and the guilty prosper, I suppose.",
-        	"CHOICE",
-        	"I do hope this information proves useful, detective.",
-        	"Au revoir.",
+    		{
+    			"Ah, hello detective.",
+    			"The innocent die and the guilty prosper, I suppose.",
+        	},
+        	{
+        		"I do hope this information proves useful, detective.",
+        		"Au revoir.",
+        	}
     	}
         self.spokenToText = {
         	"Oh dear, feeling a little case of memory loss?",
@@ -115,11 +121,14 @@ function Dialogue:new(name, debugMode)
         }
     elseif name == "Lief Greenhand" then
     	self.text = {
-    		"Hi! I'm Lief! Let me know if I can help!",
-    		"You sure have a sparkle in your eye for someone investigating a murder case, detective. How peculiar!",
-        	"CHOICE",
-        	"Oh! I get it! You're doing detective stuff with these clues, aren't you!",
-        	"Wait, did someone take my biscuit?",
+    		{
+    			"Hi! I'm Lief! Let me know if I can help!",
+    			"You sure have a sparkle in your eye for someone investigating a murder case, detective. How peculiar!",
+        	},
+        	{	
+        		"Oh! I get it! You're doing detective stuff with these clues, aren't you!",
+        		"Wait, did someone take my biscuit?",
+        	}
     	}
         self.spokenToText = {
         	"Dummy! You already asked me something!",
@@ -139,11 +148,14 @@ function Dialogue:new(name, debugMode)
         }
     elseif name == "Dick Goldmember" then
     	self.text = {
-    		"Like, listen here, bumpkin.",
-    		"Now, ya might think yer, like, cool just cuz you're, like, some kinda badass harbinger of justice, but yer nothing compared to me!",
-    		"Like, stay away from the ladies tonight, will ya man?",
-        	"CHOICE",
-        	"It's not like I want to aid in your investigation or anything.",
+    		{
+    			"Like, listen here, bumpkin.",
+    			"Now, ya might think yer, like, cool just cuz you're, like, some kinda badass harbinger of justice, but yer nothing compared to me!",
+    			"Like, stay away from the ladies tonight, will ya man?",
+        	},
+        	{
+        		"It's not like I want to aid in your investigation or anything.",
+        	}
     	}
         self.spokenToText = {
         	"Like, you ardy were here.",
@@ -163,13 +175,16 @@ function Dialogue:new(name, debugMode)
         }
     elseif name == "Bob Gray" then
     	self.text = {
-    		"Hmm. Hey.",
-    		"I'm Bob.",
-    		"Don't call me Bob.",
-    		"So, what do you want?",
-        	"CHOICE",
-        	"Move along, now.",
-        	"Can't you see I'm busy?",
+    		{
+    			"Hmm. Hey.",
+    			"I'm Bob.",
+    			"Don't call me Bob.",
+    			"So, what do you want?",
+        	},
+        	{
+        		"Move along, now.",
+        		"Can't you see I'm busy?",
+        	}
     	}
         self.spokenToText = {
         	"What?",
@@ -189,11 +204,14 @@ function Dialogue:new(name, debugMode)
         }
     elseif name == "Violet Purpov" then
     	self.text = {
-    		"Hey there, cutie.",
-    		"What's a fine piece of man like yourself doing in a place like this?",
-        	"CHOICE",
-        	"I see you're a man that sticks to his job.",
-        	"Come back if you want to sneak out to the garden.",
+    		{
+    			"Hey there, cutie.",
+    			"What's a fine piece of man like yourself doing in a place like this?",
+    		},
+    		{
+        		"I see you're a man that sticks to his job.",
+        		"Come back if you want to sneak out to the garden.",
+    		}
     	}
         self.spokenToText = {
         	"I'm glad you're back, but I really don't know anything else.",
@@ -213,12 +231,15 @@ function Dialogue:new(name, debugMode)
         }
     elseif name == "Wilson White" then
     	self.text = {
-    		"Uh, hey, uh, hehe...",
-    		"What brings you over here, detective?",
-    		"N-nothing wrong here...",
-        	"CHOICE",
-        	"That's all I know! I swear!",
-        	"*Incoherent murmuring*",
+    		{
+    			"Uh, hey, uh, hehe...",
+    			"What brings you over here, detective?",
+    			"N-nothing wrong here...",
+    		},
+    		{
+        		"That's all I know! I swear!",
+        		"*Incoherent murmuring*",
+        	}
     	}
         self.spokenToText = {
         	"Eep! That's all I know, I swear!",

@@ -9,13 +9,15 @@ local choiceText = [[
 [2] Graph2 question?
 ]]
 
+local wrapAmount = 64
+
 function Textbox:new(text, personTalkingTo)
     local self = setmetatable({}, Textbox)
 
     -- preprocess the text to be nicely word wrapped
     self.text = {}
     for i, boxtext in ipairs(text) do
-        self.text[i] = lume.wordwrap(boxtext, 64)
+        self.text[i] = lume.wordwrap(boxtext, wrapAmount)
     end
 
     self.textIndex = 1
@@ -126,12 +128,12 @@ function Textbox:keypressed(k)
 
     if self:isInChoiceMode() then
         if k == "1" then
-            table.insert(self.text, self.textIndex+1, self.personTalkingTo:ask("1"))
+            table.insert(self.text, self.textIndex+1, lume.wordwrap(self.personTalkingTo:ask("1"), wrapAmount))
             self:proceed()
         end
 
         if k == "2" then
-            table.insert(self.text, self.textIndex+1, self.personTalkingTo:ask("2"))
+            table.insert(self.text, self.textIndex+1, lume.wordwrap(self.personTalkingTo:ask("2"), wrapAmount))
             self:proceed()
         end
 

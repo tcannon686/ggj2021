@@ -12,6 +12,7 @@ GAME_WIDTH = 1024
 GAME_HEIGHT = 576
 
 function love.load()
+    math.randomseed(os.time())
     love.graphics.setDefaultFilter("nearest")
 
     MainFont = love.graphics.newFont("assets/ProggyClean.ttf", 16)
