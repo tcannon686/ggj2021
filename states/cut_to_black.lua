@@ -24,8 +24,10 @@ function CutToBlack:update(dt)
 end
 
 function CutToBlack:draw()
+    StateStack.peekNext():draw()
     local prevCanvas = lg.getCanvas()
     lg.setCanvas(GuiCanvas)
+    love.graphics.setDepthMode("always", true)
 
     local alpha = math.min(self.timer, 1)
     alpha = math.min(alpha, 3.5-self.timer)
@@ -51,7 +53,7 @@ function CutToBlack:draw()
     lg.setCanvas({prevCanvas, depth=true})
 
     lg.setColor(1,1,1)
-    StateStack.peekNext():draw()
+    love.graphics.setDepthMode("lequal", true)
 end
 
 return CutToBlack

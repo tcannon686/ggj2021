@@ -318,6 +318,7 @@ function Game:draw()
     -------------2D drawing--------------
     local prevCanvas = lg.getCanvas()
     lg.setCanvas(GuiCanvas)
+    love.graphics.setDepthMode("always", true)
 
     local minutes = math.floor(math.floor(self.timer) / 60)
     local seconds = math.floor(self.timer) % 60
@@ -328,6 +329,7 @@ function Game:draw()
     --lg.print("Time: " .. minutes ..":" .. seconds, 0, 24, 0, 2)
 
     lg.setCanvas({prevCanvas, depth=true})
+    love.graphics.setDepthMode("lequal", true)
     --------------------------------------
 
 
