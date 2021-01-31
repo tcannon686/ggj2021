@@ -160,7 +160,7 @@ function Game:new(personCount)
     self.player = Player:new(0,0,0, self.map)
 
     self.textbox = nil
-    self.timer = 10
+    self.timer = 300
 
     self.people = {}
 
