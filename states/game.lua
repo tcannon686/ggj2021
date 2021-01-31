@@ -26,13 +26,13 @@ local wordRepresentations = {
     },
 
     people = {
-        "red",
-        "blue",
-        "green",
-        "yellow",
-        "blue",
-        "purple",
-        "white"
+        "Crimson Reddington",
+        "Aqua Bloomberg",
+        "Lief Greenhand",
+        "Dick Goldmember",
+        "Bob Gray",
+        "Violet Purpov",
+        "Wilson White"
     }
 }
 
