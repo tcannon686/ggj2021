@@ -142,6 +142,7 @@ end
 local Game = {}
 Game.__index = Game
 
+local music
 function Game:new(personCount)
     local self = setmetatable({}, Game)
 
@@ -174,12 +175,15 @@ function Game:new(personCount)
 
     self.dayCount = 0
 
-    self.magnifyingGlass = lg.newImage("assets/magnifying_glass.png")
+    self.righthand = lg.newImage("assets/righthand.png")
+    self.lefthand = lg.newImage("assets/lefthand.png")
+    self.accuseSprite = lg.newImage("assets/accusation.png")
+    self.accuseTimer = 0
 
     self.accusedSound = love.audio.newSource("sfx/accuse.wav", "stream")
     self.winSound = love.audio.newSource("sfx/win.wav", "stream")
 
-    local music = love.audio.newSource("music/murder lounge.mp3", "static")
+    music = love.audio.newSource("music/murder lounge.mp3", "static")
     music:setLooping(true)
     music:setVolume(0.05)
     music:play()
@@ -224,6 +228,8 @@ function Game:update(dt)
         StateStack.peek().timer = 2
     end
 
+    self.accuseTimer = math.max(self.accuseTimer - dt, 0)
+
     -- only update the player if there is no active textbox
     self.player:update(dt, self)
 
@@ -241,6 +247,8 @@ function Game:update(dt)
     end
 
     if self.queuedWin and not self.textbox then
+        self.winSound:play()
+        music:stop()
         StateStack.push(WinState:new())
     end
 end
@@ -328,6 +336,11 @@ function Game:draw()
     lg.print("Day " .. self.dayCount, 0, 0, 0, 2)
     --lg.print("Time: " .. minutes ..":" .. seconds, 0, 24, 0, 2)
 
+    lg.draw(self.righthand, GAME_WIDTH - 280, GAME_HEIGHT - 350 + math.sin(self.player.headbob)*20)
+    lg.draw(self.lefthand, 0, GAME_HEIGHT - 250 - math.sin(self.player.headbob)*20)
+    lg.setColor(1,1,1, self.accuseTimer)
+    lg.draw(self.accuseSprite)
+    lg.setColor(1,1,1)
     lg.setCanvas({prevCanvas, depth=true})
     love.graphics.setDepthMode("lequal", true)
     --------------------------------------

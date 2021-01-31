@@ -25,6 +25,7 @@ function Player:new(x,y,z, collisionMap)
     self.onGround = false
     self.stepDownSize = 0.075
     self.collisionMap = collisionMap
+    self.headbob = 0
 
     self.footstepSounds = {
         love.audio.newSource("sfx/Light  Wood footsteps 1.wav", "static"),
@@ -159,6 +160,7 @@ function Player:fixedUpdate(dt, game)
     if self.onGround then
         local speedLength = math.sqrt(self.speed[1]^2 + self.speed[2]^2 + self.speed[3]^2)
         self.footstepTimer = self.footstepTimer + speedLength
+        self.headbob = self.headbob + speedLength*7.5
 
         if self.footstepTimer > 0.75 then
             self.footstepTimer = 0

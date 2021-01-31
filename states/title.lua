@@ -2,18 +2,19 @@ local lg = love.graphics
 local StateStack = require "statestack"
 local Game = require "states/game"
 local Credits = require "states/credits"
+local Tutorial = require "states/tutorial"
+
 -- create the Title class
 local Title = {}
 Title.__index = Title
 
-local music
 function Title:new()
 	local self = setmetatable({}, Title)
 
-    music = love.audio.newSource("music/title theme.mp3", "static")
-    music:setLooping(true)
-    music:setVolume(0.05)
-    music:play()
+    TitleMusic = love.audio.newSource("music/title theme.mp3", "static")
+    TitleMusic:setLooping(true)
+    TitleMusic:setVolume(0.05)
+    TitleMusic:play()
 
 	return self
 end
@@ -36,8 +37,7 @@ end
 function Title:keypressed(k)
 	if k == "space" then
 		StateStack.pop()
-		StateStack.push(Game:new(7))
-        music:stop()
+		StateStack.push(Tutorial:new(7))
 	end
 	if k == "c" then
 		StateStack.push(Credits:new())

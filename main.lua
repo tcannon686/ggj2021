@@ -45,6 +45,7 @@ function love.load()
 
     function love.keypressed(...)
         if ({...})[1] == "escape" then love.event.push("quit") end
+        if ({...})[1] == "p" then love.graphics.captureScreenshot(os.time() .. ".png") end
 
         local state = StateStack:peek()
         if state and state.keypressed then
