@@ -6,8 +6,14 @@ local Credits = require "states/credits"
 local Title = {}
 Title.__index = Title
 
+local music
 function Title:new()
 	local self = setmetatable({}, Title)
+
+    music = love.audio.newSource("music/title theme.mp3", "static")
+    music:setLooping(true)
+    music:setVolume(0.05)
+    music:play()
 
 	return self
 end
@@ -31,6 +37,7 @@ function Title:keypressed(k)
 	if k == "space" then
 		StateStack.pop()
 		StateStack.push(Game:new(7))
+        music:stop()
 	end
 	if k == "c" then
 		StateStack.push(Credits:new())

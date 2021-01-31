@@ -175,6 +175,13 @@ function Game:new(personCount)
     self.accusedSound = love.audio.newSource("sfx/accuse.wav", "stream")
     self.winSound = love.audio.newSource("sfx/win.wav", "stream")
 
+    local music = love.audio.newSource("music/murder lounge.mp3", "static")
+    music:setLooping(true)
+    music:setVolume(0.05)
+    music:play()
+
+    love.mouse.setRelativeMode(true)
+
     local locations = {
         {2.5, 1.6, 2},
         {2.25, 1.6, 5.8},
@@ -314,7 +321,7 @@ function Game:draw()
         seconds = "0" .. seconds
     end
     lg.print("Day " .. self.dayCount, 0, 0, 0, 2)
-    lg.print("Time: " .. minutes ..":" .. seconds, 0, 24, 0, 2)
+    --lg.print("Time: " .. minutes ..":" .. seconds, 0, 24, 0, 2)
 
     lg.setCanvas({prevCanvas, depth=true})
     --------------------------------------
