@@ -122,12 +122,12 @@ local function makeRandomSus(people, graphList, murderer)
         if name ~= murderer and math.random(0, 1) == 1 then -- sus coinFlip
             graphIndex = math.random(#graphList)
             graph = graphList[graphIndex]
-            print(name .. " is sus on graph no. " .. graphIndex)
+            --print(name .. " is sus on graph no. " .. graphIndex)
             makeSus(graph, name)
 
             connectionSize = tableLength(graph[name])
             if connectionSize == 0 then
-                print(name .. " is socially akward")
+                --print(name .. " is socially akward")
                 connection = math.random(#people)
                 graph[name][connection] = connection
             end
@@ -157,7 +157,7 @@ function Game:new(personCount)
 
     makeMurderer(graphList, self.murderer)
     makeRandomSus(people, graphList, self.murderer)
-    --printGraph(graphList)
+    printGraph(graphList)
 
     self.map = g3d.newModel("assets/house1.obj", "assets/castle.png", {0,2,0}, nil, {-1,-1,1})
     self.player = Player:new(-1.5,1.5,0, self.map)
