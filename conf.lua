@@ -3,6 +3,6 @@ function love.conf(t)
     t.window.width = 1024
     t.window.height = 576
     --t.window.fullscreen = true
-    t.window.title = "fps demo"
+    t.window.title = "Clueless"
     t.window.resizable = true
 end
