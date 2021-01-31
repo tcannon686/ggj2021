@@ -91,11 +91,13 @@ local function printGraph(graphList)
     end
 end
 
-local function makeSus(graph, susPerson)
+local function makeSus(graph, susPerson, murderer)
     for name,connectionList in pairs(graph) do
         for i,connection in pairs(connectionList) do
             if connection == susPerson then
-                connectionList[i] = nil
+                if (susPerson ~= murderer and murderer ~= connection) or susPerson == murderer then
+                    connectionList[i] = nil
+                end
                 return
             end
         end
@@ -104,7 +106,7 @@ end
 
 local function makeMurderer(graphList, murderer)
     for _,graph in pairs(graphList) do
-        makeSus(graph, murderer)
+        makeSus(graph, murderer, murderer)
     end
 end
 
@@ -123,7 +125,7 @@ local function makeRandomSus(people, graphList, murderer)
             graphIndex = math.random(#graphList)
             graph = graphList[graphIndex]
             --print(name .. " is sus on graph no. " .. graphIndex)
-            makeSus(graph, name)
+            makeSus(graph, name, murderer)
 
             connectionSize = tableLength(graph[name])
             if connectionSize == 0 then

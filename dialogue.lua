@@ -7,8 +7,8 @@ function Dialogue:new(name, debugMode)
 
     if debugMode then 
         self.text = {
-            "Howdy.",
-            "CHOICE"
+            {"Howdy."},
+            {"cya"}
         }
         self.spokenToText = {
             "Good day."
