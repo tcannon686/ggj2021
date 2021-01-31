@@ -24,11 +24,12 @@ function Person:new(name, known)
     --     "CHOICE",
     -- }
 
-    local dialogue = Dialogue:new(name)
-    self.text = dialogue.text
+    self.dialogue = Dialogue:new(name, true)
+    -- self.text = dialogue.text
 
     self.speaking = false
     self.inSpeakingRange = false
+    self.beenSpokenTo = false
 
     return self
 end
@@ -39,12 +40,14 @@ function Person:ask(what)
         for _,i in pairs(self.known.graph1) do
             str = str .. i .. ","
         end
+        self.beenSpokenTo = true
         return str
     elseif what == "2" then
         local str = "I saw "
         for _,i in pairs(self.known.graph2) do
             str = str .. i .. ","
         end
+        self.beenSpokenTo = true
         return str
     end
     -- return self.known[what]
@@ -63,7 +66,17 @@ function Person:update(dt, game)
         -- player has now initiated a conversation with this person
         self.inSpeakingRange = true
         if self.speaking and not game.textbox then
-            game.textbox = Textbox:new(self.text, self)
+            if self.accused then
+                if self.name == game.murderer then
+                    game.textbox = Textbox:new(self.dialogue.caughtText, self)
+                else
+                    game.textbox = Textbox:new(self.dialogue.accusedText, self)
+                end
+            elseif not self.beenSpokenTo then
+                game.textbox = Textbox:new(self.dialogue.text, self)
+            else
+                game.textbox = Textbox:new(self.dialogue.spokenToText, self)
+            end
         end
     else
         self.inSpeakingRange = false
@@ -80,6 +93,9 @@ end
 function Person:mousepressed(k)
     if self.inSpeakingRange and k == 1 then
         self.speaking = true
+    elseif self.inSpeakingRange and k == 2 then
+        self.speaking = true
+        self.accused = true
     end
 end
 
