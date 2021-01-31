@@ -18,11 +18,10 @@ function Person:new(name, known)
     local texture = lume.randomchoice({"assets/person1.png", "assets/person2.png"})
     self.model = g3d.newModel("assets/vertical_plane.obj", texture, position, {0,0,0}, {0.4,0.4,0.4})
 
+    -- keep for faster debugging
     -- self.text = {
-    --     "making this short cus I'm impatient",
+    --     "I fucked ur mom",
     --     "CHOICE",
-    --     -- "i had sexual intercourse with your mother last night",
-    --     -- "joey didnt get added to the repo lol",
     -- }
 
     local dialogue = Dialogue:new(name)

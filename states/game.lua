@@ -4,14 +4,24 @@ local Person = require "person"
 local Player = require "player"
 local lume = require "lume"
 
+-- people = {
+--     "red",
+--     "blue",
+--     "green",
+--     "yellow",
+--     "blue",
+--     "purple",
+--     "white"
+-- }
+
 people = {
-    "red",
-    "blue",
-    "green",
-    "yellow",
-    "blue",
-    "purple",
-    "white"
+    "Crimson Reddington",
+    "Aqua Bloomberg",
+    "Lief Greenhand",
+    "Dick Goldmember",
+    "Bob Gray",
+    "Violet Purpov",
+    "Wilson White"
 }
 
 local function makeGraphList(num)
