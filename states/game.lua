@@ -155,7 +155,7 @@ function Game:new(personCount)
     makeRandomSus(people, graphList, self.murderer)
     printGraph(graphList)
 
-    self.map = g3d.newModel("assets/house.obj", "assets/castle.png", {0,2,0}, nil, {-1,-1,1})
+    self.map = g3d.newModel("assets/house1.obj", "assets/castle.png", {0,2,0}, nil, {-1,-1,1})
     self.background = g3d.newModel("assets/sphere.obj", "assets/starfield.png", {0,0,0}, nil, {500,500,500})
     self.player = Player:new(0,0,0, self.map)
 
