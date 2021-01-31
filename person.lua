@@ -125,13 +125,15 @@ function Person:update(dt, game)
             --------------------------------------
 
             if self.accused then
-                game.accusedSound:stop()
-                game.accusedSound:play()
-
                 if self.name == game.murderer then
+                    game.winSound:play()
+
                     game.textbox = Textbox:new(self.dialogue.caughtText, self)
                     game:queueWin()
                 else
+                    game.accusedSound:stop()
+                    game.accusedSound:play()
+
                     game.textbox = Textbox:new(self.dialogue.accusedText, self)
                     self.hasBeenAccused = true
                     game:queueNextDay()

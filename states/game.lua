@@ -159,7 +159,7 @@ function Game:new(personCount)
     makeRandomSus(people, graphList, self.murderer)
     printGraph(graphList)
 
-    self.map = g3d.newModel("assets/house1.obj", "assets/castle.png", {0,2,0}, nil, {-1,-1,1})
+    self.map = g3d.newModel("assets/house1.obj", "assets/castle_4x.png", {0,2,0}, nil, {-1,-1,1})
     self.player = Player:new(-1.5,1.5,0, self.map)
     --self.player.position = {-1.5,1.5,0}
     g3d.camera.lookAt(-1.5, 1.5, 0, 0,1.5,0)
@@ -171,6 +171,7 @@ function Game:new(personCount)
     self.magnifyingGlass = lg.newImage("assets/magnifying_glass.png")
 
     self.accusedSound = love.audio.newSource("sfx/accuse.wav", "stream")
+    self.winSound = love.audio.newSource("sfx/win.wav", "stream")
 
     local locations = {
         {2.5, 1.6, 2},
