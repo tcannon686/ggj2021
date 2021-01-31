@@ -15,7 +15,7 @@ function Person:new(name, known)
     self.known = known
 
     local position = {lume.random(-2,2), 1.6, lume.random(-2,2)}
-    local texture = lume.randomchoice({"assets/person1.png", "assets/person2.png"})
+    local texture = lume.randomchoice({"assets/Dick.png"})
     self.model = g3d.newModel("assets/vertical_plane.obj", texture, position, {0,0,0}, {0.4,0.4,0.4})
 
     -- keep for faster debugging
