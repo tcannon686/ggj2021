@@ -160,7 +160,9 @@ function Game:new(personCount)
     --printGraph(graphList)
 
     self.map = g3d.newModel("assets/house1.obj", "assets/castle.png", {0,2,0}, nil, {-1,-1,1})
-    self.player = Player:new(0,0,0, self.map)
+    self.player = Player:new(-1.5,1.5,0, self.map)
+    --self.player.position = {-1.5,1.5,0}
+    g3d.camera.lookAt(-1.5, 1.5, 0, 0,1.5,0)
     self.textbox = nil
     self.people = {}
 
