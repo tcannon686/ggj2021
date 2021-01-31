@@ -170,6 +170,18 @@ function Game:new(personCount)
 
     self.magnifyingGlass = lg.newImage("assets/magnifying_glass.png")
 
+    local locations = {
+        {2.5, 1.6, 2},
+        {2.25, 1.6, 5.8},
+        {-0.8, 1.6, -2.4},
+        {-0.75, 1.6, -5},
+        {2.65, 1.6, -7},
+        {7.4, 1.6, 0.71},
+        {6, 1.6, -1},
+        {-0.15, 1.6, 10.5},
+        {-0.62, 1.6, 3},
+    }
+
     -- create all the people
     for _,name in pairs(people) do
         print(name)
@@ -178,7 +190,9 @@ function Game:new(personCount)
             graph2 = graphList[2][name]
         }
 
-        self.people[name] = Person:new(name, known)
+        local position = table.remove(locations, math.random(#locations))
+
+        self.people[name] = Person:new(name, known, position)
     end
 
     self.firstFrame = true

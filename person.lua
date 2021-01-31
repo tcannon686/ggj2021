@@ -8,7 +8,7 @@ local Dialogue = require "dialogue"
 local Person = {}
 Person.__index = Person
 
-function Person:new(name, known)
+function Person:new(name, known, position)
     local self = setmetatable({}, Person)
 
     self.name = name
@@ -20,8 +20,6 @@ function Person:new(name, known)
     local femaleSound1 = love.audio.newSource("sfx/female1.mp3", "static")
     local femaleSound2 = love.audio.newSource("sfx/female2.mp3", "static")
 
-    
-    local position = {lume.random(-2,2), 1.6, lume.random(-2,2)}
     local texture, pitch
     if name == "Crimson Reddington" then
         texture = "assets/Crimson.png"
