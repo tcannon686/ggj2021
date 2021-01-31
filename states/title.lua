@@ -19,7 +19,8 @@ function Title:draw()
 	local prevCanvas = lg.getCanvas()
     lg.setCanvas(GuiCanvas)
 
-    lg.print("TITLE (space to start)", GAME_WIDTH/2 - 100, GAME_HEIGHT/2, 0, 2)
+    lg.print("CLUELESS", GAME_WIDTH/2 - 60, GAME_HEIGHT/2 - 50, 0, 2)
+    lg.print("(space to start)", GAME_WIDTH/2 - 110, GAME_HEIGHT/2, 0, 2)
 
     lg.setCanvas({prevCanvas, depth=true})
 end
