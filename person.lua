@@ -17,7 +17,13 @@ function Person:new(name, known)
     local position = {lume.random(-2,2), 1.6, lume.random(-2,2)}
     local texture = lume.randomchoice({"assets/person1.png", "assets/person2.png"})
     self.model = g3d.newModel("assets/vertical_plane.obj", texture, position, {0,0,0}, {0.4,0.4,0.4})
-    
+
+    -- keep for faster debugging
+    -- self.text = {
+    --     "I fucked ur mom",
+    --     "CHOICE",
+    -- }
+
     local dialogue = Dialogue:new(name)
     self.text = dialogue.text
 
@@ -28,7 +34,21 @@ function Person:new(name, known)
 end
 
 function Person:ask(what)
-    return self.known[what]
+    if what == "1" then
+        local str = "I was with "
+        for _,i in pairs(self.known.graph1) do
+            str = str .. i .. ","
+        end
+        return str
+    elseif what == "2" then
+        local str = "I saw "
+        for _,i in pairs(self.known.graph2) do
+            str = str .. i .. ","
+        end
+        return str
+    end
+    -- return self.known[what]
+    return nil
 end
 
 function Person:onAccused(props)
